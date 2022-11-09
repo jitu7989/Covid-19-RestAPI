@@ -1,0 +1,13 @@
+package com.coviwin;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CovidVaccinationServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CovidVaccinationServiceApplication.class, args);
+	}
+
+}
