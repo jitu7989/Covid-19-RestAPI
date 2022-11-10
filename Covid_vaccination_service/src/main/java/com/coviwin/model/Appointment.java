@@ -1,6 +1,7 @@
 package com.coviwin.model;
 
 import java.time.LocalDate;
+import com.coviwin.enums.Slot;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.masai.enums.Slot;
+import com.coviwin.enums.Slot;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
