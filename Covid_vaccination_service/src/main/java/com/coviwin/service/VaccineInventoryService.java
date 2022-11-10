@@ -1,6 +1,10 @@
 package com.coviwin.service;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import com.coviwin.model.Vaccine;
+import com.coviwin.model.VaccineInventory;
 
 public interface VaccineInventoryService {
 

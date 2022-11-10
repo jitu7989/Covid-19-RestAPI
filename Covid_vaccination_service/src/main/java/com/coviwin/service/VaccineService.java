@@ -1,5 +1,7 @@
 package com.coviwin.service;
 
+import com.coviwin.model.Vaccine;
+
 public interface VaccineService {
 
 	public Vaccine allVaccine();
