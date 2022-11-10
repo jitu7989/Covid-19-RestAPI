@@ -1,4 +1,4 @@
-package com.masai.model;
+package com.coviwin.model;
 
 import java.time.LocalDate;
 
@@ -12,9 +12,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.aspectj.weaver.patterns.ConcreteCflowPointcut.Slot;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.masai.enums.Slot;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

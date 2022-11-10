@@ -1,4 +1,4 @@
-package com.masai.model;
+package com.coviwin.model;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;

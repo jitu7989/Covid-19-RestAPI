@@ -1,4 +1,4 @@
-package com.masai.model;
+package com.coviwin.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
