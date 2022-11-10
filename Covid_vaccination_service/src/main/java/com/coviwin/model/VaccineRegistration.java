@@ -29,7 +29,7 @@ public class VaccineRegistration {
 //	@NotBlank(message = "Mobile Number is Mandatory")
 	@Size(max=10,message="Moblie Number length should be 10!")
 	@Pattern(regexp = "^[6-9][0-9]{9}$",message="Mobile No is Invalid!")
-	private String mobileno;
+	private Long mobileno;
 
 //	@NotBlank(message = "Date of Registration is Mandatory")
 	@JsonFormat(pattern = "dd-MM-yyyy")

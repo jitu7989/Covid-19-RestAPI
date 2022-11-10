@@ -1,6 +1,7 @@
 package com.coviwin.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.coviwin.exception.IdCardException;
 import com.coviwin.model.AdharCard;
@@ -9,6 +10,7 @@ import com.coviwin.model.PanCard;
 import com.coviwin.repo.IdCardServiceRepo;
 import com.coviwin.service.IdCardService;
 
+@Service
 public class IdCardServiceImpl implements IdCardService {
 
 	@Autowired
@@ -23,6 +25,15 @@ public class IdCardServiceImpl implements IdCardService {
 		     return idcard;
 		}else
 			throw new IdCardException("Invalid PanNo...");
+		
+		
+//		IdCard idcard = idCardRepo.findByPancard(new PanCard(panNo));
+//		
+//		if (idcard == null)
+//			throw new IdCardException("Idcard not found with the  panNo:" + panNo);
+//		else
+//			return idcard;
+		
 		
 	}
 
