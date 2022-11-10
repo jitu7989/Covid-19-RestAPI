@@ -2,6 +2,8 @@ package com.coviwin.service;
 
 import java.util.List;
 
+import com.coviwin.model.VaccinationCenter;
+
 public interface VaccinationCenterService {
 
 	public List<VaccinationCenter> getAllVaccineCenters( );

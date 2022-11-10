@@ -1,5 +1,9 @@
 package com.coviwin.service;
 
+import java.util.List;
+
+import com.coviwin.model.Appointment;
+
 public interface AppointmentService {
 
 	public List<Appointment> allAppointment();
