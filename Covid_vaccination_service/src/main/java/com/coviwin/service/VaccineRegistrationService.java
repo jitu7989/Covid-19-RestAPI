@@ -2,6 +2,9 @@ package com.coviwin.service;
 
 import java.util.List;
 
+import com.coviwin.model.Member;
+import com.coviwin.model.VaccineRegistration;
+
 public interface VaccineRegistrationService {
 
 	public List<VaccineRegistration> getAllVaccineRegistration();
