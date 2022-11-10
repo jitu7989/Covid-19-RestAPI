@@ -38,9 +38,18 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
 	@Override
 	public List<Member> getAllMember(Long mobileNo) throws VaccineRegistrationException {
 
-          VaccineRegistration vacReg = vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
-          
-          return vacReg.getMember();
+//          VaccineRegistration vacReg = vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
+//          
+//          return vacReg.getMember();
+		
+		List<Member> list = vacRegRepo.getMembersByMobileNo(mobileNo);
+		
+		if(list.isEmpty()) {
+			throw new VaccineRegistrationException("NO member found with mobileNo : " + mobileNo);
+		}else
+			return list;
+		
+		
 	}
 
 	@Override
