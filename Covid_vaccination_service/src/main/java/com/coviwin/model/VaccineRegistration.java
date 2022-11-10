@@ -1,4 +1,4 @@
-package com.masai.model;
+package com.coviwin.model;
 
 import java.time.LocalDate;
 import java.util.List;
