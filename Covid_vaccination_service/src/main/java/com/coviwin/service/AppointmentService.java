@@ -6,6 +6,7 @@ import com.coviwin.model.Appointment;
 
 public interface AppointmentService {
 
+//	Hello
 	public List<Appointment> allAppointment();
 	
 	public Appointment getAppointment(Long bookingId);
