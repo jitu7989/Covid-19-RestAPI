@@ -7,6 +7,6 @@ public interface IdCardService {
 
 	public IdCard getPanCardByNumber(String panNo) throws IdCardException;
 	public IdCard getAdharCardByNo(Long adharNo)throws IdCardException;
-	public IdCard addIdCard(IdCard id);
+	public IdCard addIdCard(IdCard id) throws IdCardException;
 	
 }
