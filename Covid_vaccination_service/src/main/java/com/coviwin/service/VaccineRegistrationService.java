@@ -21,4 +21,5 @@ public interface VaccineRegistrationService {
 	public Boolean deleteVaccineRegistration(VaccineRegistration reg)throws VaccineRegistrationException;
 	
 
+
 }
