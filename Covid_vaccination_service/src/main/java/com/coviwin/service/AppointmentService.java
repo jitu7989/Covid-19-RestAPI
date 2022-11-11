@@ -2,18 +2,20 @@ package com.coviwin.service;
 
 import java.util.List;
 
+import com.coviwin.exception.ApppintmentException;
 import com.coviwin.model.Appointment;
 
 public interface AppointmentService {
 
-	public List<Appointment> allAppointment();
+	public List<Appointment> allAppointment()throws ApppintmentException;
 	
-	public Appointment getAppointment(Long bookingId); //m
+
+	public Appointment getAppointment(Long bookingId)throws ApppintmentException;
 	
-	public Appointment addAppointment(Appointment app); //m
+	public Appointment addAppointment(Appointment app)throws ApppintmentException;
 	
-	public Appointment updateAppointment(Appointment app); //m
+	public Appointment updateAppointment(Appointment app)throws ApppintmentException;
 	
-	public Boolean deleteAppointment(Appointment app); //m
+	public Boolean deleteAppointment(Appointment app)throws ApppintmentException; 
 	
 }
