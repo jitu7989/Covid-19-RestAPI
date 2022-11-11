@@ -18,6 +18,7 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
 	@Autowired
 	private VaccineRegistrationRepo vacRegRepo;
 	
+	
 	@Override
 	public List<VaccineRegistration> getAllVaccineRegistration()throws VaccineRegistrationException {
 	
@@ -40,7 +41,7 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
 
 //          VaccineRegistration vacReg = vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
 //          
-//          return vacReg.getMember();
+//          return vacReg.getMembers();
 		
 		List<Member> list = vacRegRepo.getMembersByMobileNo(mobileNo);
 		

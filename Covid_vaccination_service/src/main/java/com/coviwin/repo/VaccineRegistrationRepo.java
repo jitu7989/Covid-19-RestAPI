@@ -12,4 +12,7 @@ public interface VaccineRegistrationRepo extends JpaRepository<VaccineRegistrati
 
 	@Query("select v.members from VaccineRegistration v where v.mobileNo=?1")
 	public List<Member> getMembersByMobileNo(Long mobileNo);
+	
+	
+	
 }
