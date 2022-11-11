@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class AdharCard {
 //	@Size(max = 14, message = "Addhar card number length is maximum 12!")
 //	@Pattern(regexp = "^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$", message = "Adhar card Number is Invalid!")

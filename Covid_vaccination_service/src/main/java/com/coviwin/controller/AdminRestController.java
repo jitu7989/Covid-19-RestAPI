@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coviwin.exception.IdCardException;
+import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.VaccinationCenter;
 import com.coviwin.model.Vaccine;
@@ -121,7 +122,7 @@ public class AdminRestController {
 //	Vaccine Inventory Service Method
 	
 	@GetMapping("/vaccineInventories")
-	public ResponseEntity<List< VaccineInventory >> getAllVacciceInventory() {
+	public ResponseEntity<List< VaccineInventory >> getAllVacciceInventory() throws VaccineInventoryException {
 		
 		List< VaccineInventory > vInventory =  vaccineInventoryService.allVaccineInventory();
 		
@@ -129,7 +130,7 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccineInventories/vaccine")
-	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine( @RequestBody Vaccine vaccine ){
+	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine( @RequestBody Vaccine vaccine ) throws VaccineInventoryException{
 		
 		 List<VaccineInventory> vi = vaccineInventoryService.getVaccineInventoryByVaccine(vaccine);
 		 return new ResponseEntity<List<VaccineInventory>>(  vi , HttpStatus.FOUND );
@@ -137,7 +138,7 @@ public class AdminRestController {
 	
 	
 	@DeleteMapping("/vaccineInventory/vi")
-	public ResponseEntity<Boolean> deleteVaccineInventory( @PathVariable("vi") Integer arg ){
+	public ResponseEntity<Boolean> deleteVaccineInventory( @PathVariable("vi") Integer arg ) throws VaccineInventoryException{
 		
 		Boolean fBoolean =  vaccineInventoryService.deleteVaccineInventory( arg );
 		
