@@ -3,6 +3,8 @@ package com.coviwin.controller;
 import java.security.PublicKey;
 import java.util.List;
 
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coviwin.exception.IdCardException;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.VaccinationCenter;
+import com.coviwin.model.Vaccine;
+import com.coviwin.model.VaccineInventory;
 import com.coviwin.service.IdCardService;
 import com.coviwin.service.VaccinationCenterService;
 import com.coviwin.service.VaccineInventoryService;
@@ -37,6 +41,10 @@ public class AdminRestController {
 	@Autowired
 	public VaccineInventoryService vaccineInventoryService;
 	
+	@Autowired
+	public VaccineService vService; 
+	
+//	Vaccination center Service method
 	
 	@GetMapping(value = "/centers")
 	public ResponseEntity<List<VaccinationCenter>> allVaccinationCenter(){
@@ -81,6 +89,8 @@ public class AdminRestController {
 		return new ResponseEntity<VaccinationCenter>( vCenter , HttpStatus.ACCEPTED );
 	}
 	
+//	Id Card Service method
+	
 	@GetMapping("/getId")
 	public ResponseEntity< IdCard > getIdCardByAdhar( @RequestParam(value = "adhar") Long adharLong ) throws IdCardException{
 		
@@ -106,9 +116,43 @@ public class AdminRestController {
 		
 	}
 	
+//	Vaccine Inventory Service Method
+	
+	@GetMapping("/vaccineInventories")
+	public ResponseEntity<List< VaccineInventory >> getAllVacciceInventory() {
+		
+		List< VaccineInventory > vInventory =  vaccineInventoryService.allVaccineInventory();
+		
+		return new ResponseEntity<List<VaccineInventory>>( vInventory , HttpStatus.FOUND );
+	}
+	
+	@GetMapping("/vaccineInventories/vaccine")
+	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine( @RequestBody Vaccine vaccine ){
+		
+		 List<VaccineInventory> vi = vaccineInventoryService.getVaccineInventoryByVaccine(vaccine);
+		 return new ResponseEntity<List<VaccineInventory>>(  vi , HttpStatus.FOUND );
+	}
 	
 	
+	@DeleteMapping("/vaccineInventory/vi")
+	public ResponseEntity<Boolean> deleteVaccineInventory( @PathVariable("vi") Integer arg ){
+		
+		Boolean fBoolean =  vaccineInventoryService.deleteVaccineInventory( arg );
+		
+		return new ResponseEntity<Boolean>( fBoolean ,HttpStatus.ACCEPTED );
+	} 
 	
+	
+//	Vaccine Service Method
+	
+	@PostMapping("/vaccine")
+	public ResponseEntity<Vaccine> addVaccine(@RequestBody Vaccine vaccine){
+		
+		 Vaccine v = vService.addVaccine(vaccine);
+		 
+		 return new ResponseEntity<>( v , HttpStatus.CREATED );
+		 
+	}
 	
 	
 	
