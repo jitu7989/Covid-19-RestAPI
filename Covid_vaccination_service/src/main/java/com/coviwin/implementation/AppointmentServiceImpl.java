@@ -30,7 +30,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return list;
 	}
 
-	
+
 	@Override
 	public Appointment getAppointment(Long bookingId) throws ApppintmentException {
 		
@@ -68,6 +68,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		if(opt.isPresent()) {
 			
 			Member member = app.getMember();
+	
 			
 			member.getAppointments().add(app); // associating member with appointment
 			
