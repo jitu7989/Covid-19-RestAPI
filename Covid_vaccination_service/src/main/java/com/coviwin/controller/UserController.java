@@ -18,9 +18,15 @@ import com.coviwin.exception.MemberException;
 import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
+import com.coviwin.model.VaccinationCenter;
+import com.coviwin.model.VaccineRegistration;
 import com.coviwin.service.AppointmentService;
 import com.coviwin.service.IdCardService;
 import com.coviwin.service.MemberService;
+import com.coviwin.service.VaccinationCenterService;
+import com.coviwin.service.VaccineRegistrationService;
+
+import antlr.collections.List;
 
 
 @RestController
@@ -36,6 +42,12 @@ public class UserController {
 	 
 	@Autowired
 	 private  IdCardService idcard;
+	
+	@Autowired
+	private VaccinationCenterService vaccincenterSer;
+	
+	@Autowired
+	private VaccineRegistrationService vaccinRegSer;
 	 
 	// idcard
 	@PostMapping("/idCard")
@@ -95,9 +107,105 @@ public class UserController {
 			
 		}
 		
+		@DeleteMapping("/member")
+		public ResponseEntity<Boolean> deleteMemberHandler(@RequestBody Member member) throws MemberException{
+			
+			return new  ResponseEntity<Boolean>(memberSer.deleteMember(member), HttpStatus.OK);
+			
+		}
+		
+		@GetMapping("/memberId/{IdCardId}")
+		public ResponseEntity<Member> getMemberByIdHandler(@PathVariable("IdCardId") Integer IdCardId) throws MemberException{
+			 Member getmemberbyId=memberSer.getMemberbyId(IdCardId);
+			 return new ResponseEntity<Member>(getmemberbyId,HttpStatus.FOUND);
+			
+		}
+		
+		@GetMapping("/memberAdhar/{adharNo}")
+		public ResponseEntity<Member> getMemberByAdharHandler(@PathVariable("adharNo") Long adharNo) throws MemberException{
+			 Member getmemberbyadhar=memberSer.getMemberByAdharNo(adharNo);
+			 return new ResponseEntity<Member>(getmemberbyadhar,HttpStatus.FOUND);
+			
+		}
+		
+		@GetMapping("/memberPan/{panNo}")
+		public ResponseEntity<Member> getMemberByPanHandler(@PathVariable("panNo") String panNo) throws MemberException{
+			 Member getmemberbyPan=memberSer.getMemberByPanNo(panNo);
+			 return new ResponseEntity<Member>(getmemberbyPan,HttpStatus.FOUND);
+			
+		}
+		
+		@PutMapping("/member")
+		public ResponseEntity<Member> updateMemberHandler(@RequestBody Member member ) throws MemberException {
+			Member updateMember =memberSer.updateMember(member);
+			return new ResponseEntity<Member>(updateMember,HttpStatus.OK);
+		}
 		
 		
+		//vaccinCentral
+		// list pending
 		
+//		@GetMapping("/vaccincenter")
+//		
+//		public ResponseEntity<List < VaccinationCenter >> getListOfCenters(){	
+//		VaccinationCenter > > getListOfCenters( ){
+//			
+//			
+//		}
+		
+		@PostMapping("/vaccincenter")
+		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@RequestBody  VaccinationCenter vaccincenter) {
+			VaccinationCenter addVCenter=vaccincenterSer.addVaccineCenter(vaccincenter);
+			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.ACCEPTED);
+					
+		}
+		
+		
+		@DeleteMapping("/vaccincenter")
+		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@RequestBody VaccinationCenter vaccincenter) {
+			
+			return new  ResponseEntity<VaccinationCenter>(vaccincenterSer.deleteVaccineCenter(vaccincenter), HttpStatus.OK);
+			
+		}
+		
+		@GetMapping("/vaccincenter/{}")
+		public ResponseEntity<VaccinationCenter> getVaccineCenterHandler(@PathVariable("centerid") Integer centerid) {
+			VaccinationCenter getVCenter=vaccincenterSer.getVaccineCenters(centerid);
+			 return new ResponseEntity<VaccinationCenter>(getVCenter,HttpStatus.FOUND);
+					
+		}
+		
+		@PutMapping("/vaccincenter")
+		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@RequestBody  VaccinationCenter vaccincenter) {
+			VaccinationCenter addVCenter=vaccincenterSer.updateVaccineCenter(vaccincenter);
+			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.OK);
+					
+		}
+	
+		
+		// vaccinRegSer
+		
+		// getall member pending
+		// get vacin reg pending
+		
+		@DeleteMapping("/vaccineReg")
+		public ResponseEntity<Boolean> deleteVaccineReg(@RequestBody VaccineRegistration vaccinreg){
+			return new ResponseEntity<Boolean>(vaccinRegSer.deleteVaccineRegistration(vaccinreg),HttpStatus.OK);
+		}
+		
+		@GetMapping("/vaccineReg")
+		public ResponseEntity<VaccineRegistration> getVaccineReg(@RequestBody Long mobileNo){
+			VaccineRegistration getvaccinereg=vaccinRegSer.getVaccineRegistration(mobileNo);
+			return new ResponseEntity<VaccineRegistration>(getvaccinereg,HttpStatus.FOUND);
+			
+		}
+		
+		@PutMapping("/vaccineReg")
+		public ResponseEntity<VaccineRegistration> updateVaccineReg(@RequestBody VaccineRegistration vaccinreg){
+			VaccineRegistration updatevaccinereg=vaccinRegSer.updateVaccineRegistration(vaccinreg);
+			return new ResponseEntity<VaccineRegistration>(updatevaccinereg,HttpStatus.OK);
+			
+		}
 		
 
 }
