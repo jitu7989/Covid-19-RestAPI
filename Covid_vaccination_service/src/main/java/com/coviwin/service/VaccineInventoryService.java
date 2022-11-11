@@ -7,7 +7,7 @@ import com.coviwin.model.Vaccine;
 import com.coviwin.model.VaccineInventory;
 
 public interface VaccineInventoryService {
-
+    // admin
 	public List<VaccineInventory> allVaccineInventory();
 	public VaccineInventory addVaccineCount();
 	public VaccineInventory addVaccineIncentoryByCenter(Integer centerId);

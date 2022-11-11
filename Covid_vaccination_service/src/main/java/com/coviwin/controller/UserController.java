@@ -3,17 +3,21 @@ package com.coviwin.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coviwin.exception.IdCardException;
+import com.coviwin.exception.MemberException;
 import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
+import com.coviwin.model.Member;
 import com.coviwin.service.AppointmentService;
 import com.coviwin.service.IdCardService;
 import com.coviwin.service.MemberService;
@@ -49,7 +53,7 @@ public class UserController {
 	 }
 	 
 	 @GetMapping("/panCard/{panNo}")
-	 public ResponseEntity<IdCard> getPanByNo(@PathVariable String panNo) throws IdCardException{
+	 public ResponseEntity<IdCard> getPanByNoHandler(@PathVariable String panNo) throws IdCardException{
 		 IdCard pandetails= idcard.getPanCardByNumber(panNo);
 		 return new ResponseEntity<IdCard>(pandetails, HttpStatus.FOUND); 
 	 }
@@ -58,14 +62,42 @@ public class UserController {
 	 //delete appointment is not imple
 	 
 		@PostMapping("/appointment")
-		public ResponseEntity<Appointment> addAppointment(@RequestBody Appointment app) {
+		public ResponseEntity<Appointment> addAppointmentHandler(@RequestBody Appointment app) {
 			Appointment appoint =appointment.addAppointment(app);
 			return new ResponseEntity<Appointment>(appoint, HttpStatus.CREATED);
 		}
 		
 		@GetMapping("/appointment/{bookingID}")
-		public ResponseEntity<Appointment> getAppointment(@PathVariable("bookingID") Long bookingID) {
+		public ResponseEntity<Appointment> getAppointmentHandler(@PathVariable("bookingID") Long bookingID) {
 			return new ResponseEntity<Appointment>(appointment.getAppointment(bookingID),HttpStatus.FOUND);
 		}
+		
+		
+		@DeleteMapping("/appointment")
+		public ResponseEntity<Boolean> deleteAppoinmentHandler(@RequestBody Appointment app){
+			 return new ResponseEntity<Boolean>(appointment.deleteAppointment(app), HttpStatus.OK);
+		}
+		
+		
+		@PutMapping("/appointment")
+		public ResponseEntity<Appointment> updateAppointmentHandler(@RequestBody Appointment app ) {
+			Appointment updateAppointment =appointment.updateAppointment(app);
+			return new ResponseEntity<Appointment>(updateAppointment,HttpStatus.OK);
+		}
+		
+		
+		// memberservice 
+		
+		@PostMapping("/member")
+		public ResponseEntity<Member> addMemberHandler(@RequestBody Member member) throws MemberException {
+			 Member addmember=memberSer.addMember(member);
+			 return new ResponseEntity<Member>(addmember,HttpStatus.ACCEPTED);
+			
+		}
+		
+		
+		
+		
+		
 
 }
