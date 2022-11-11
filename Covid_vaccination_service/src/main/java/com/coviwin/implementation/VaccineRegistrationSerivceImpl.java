@@ -35,13 +35,13 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
        return vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
 	}
 
-	@Override
-	public List<Member> getAllMember(Long mobileNo) throws VaccineRegistrationException {
-
-          VaccineRegistration vacReg = vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
-          
-          return vacReg.getMember();
-	}
+//	@Override
+//	public List<Member> getAllMember(Long mobileNo) throws VaccineRegistrationException {
+//
+//          VaccineRegistration vacReg = vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
+//          
+//          return vacReg.getMember();
+//	}
 
 	@Override
 	public VaccineRegistration addVaccineRegistration(VaccineRegistration reg) {
@@ -57,6 +57,12 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
 
 	@Override
 	public Boolean deleteVaccineRegistration(VaccineRegistration reg) throws VaccineRegistrationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Member> getAllMember(Long mobileNo) throws VaccineRegistrationException {
 		// TODO Auto-generated method stub
 		return null;
 	}
