@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -26,8 +27,8 @@ import lombok.NoArgsConstructor;
 public class VaccineRegistration {
 
 	@Id
-//	@NotBlank(message = "Mobile Number is Mandatory")
-	@Size(max=10,message="Moblie Number length should be 10!")
+	@NotBlank(message = "Mobile Number is Mandatory")
+	@Size(min =10, max=10,message="Moblie Number length should be 10!")
 	@Pattern(regexp = "^[6-9][0-9]{9}$",message="Mobile No is Invalid!")
 	private Long mobileno;
 
