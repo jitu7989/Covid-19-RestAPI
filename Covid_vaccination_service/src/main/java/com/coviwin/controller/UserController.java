@@ -1,5 +1,4 @@
 package com.coviwin.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,27 +9,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.List;
 import com.coviwin.exception.IdCardException;
 import com.coviwin.exception.MemberException;
 import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.VaccinationCenter;
+import com.coviwin.model.Vaccine;
 import com.coviwin.model.VaccineRegistration;
 import com.coviwin.service.AppointmentService;
 import com.coviwin.service.IdCardService;
 import com.coviwin.service.MemberService;
 import com.coviwin.service.VaccinationCenterService;
 import com.coviwin.service.VaccineRegistrationService;
+import com.coviwin.service.VaccineService;
 
-import antlr.collections.List;
 
 
 @RestController
-@RequestMapping("/CowinUser")
+@RequestMapping("/user")
 
 public class UserController {
 	
@@ -48,6 +47,9 @@ public class UserController {
 	
 	@Autowired
 	private VaccineRegistrationService vaccinRegSer;
+	
+	@Autowired
+	private VaccineService vaccinser;
 	 
 	// idcard
 	@PostMapping("/idCard")
@@ -71,7 +73,6 @@ public class UserController {
 	 }
 	 
 	 //appointment
-	 //delete appointment is not imple
 	 
 		@PostMapping("/appointment")
 		public ResponseEntity<Appointment> addAppointmentHandler(@RequestBody Appointment app) {
@@ -103,7 +104,7 @@ public class UserController {
 		@PostMapping("/member")
 		public ResponseEntity<Member> addMemberHandler(@RequestBody Member member) throws MemberException {
 			 Member addmember=memberSer.addMember(member);
-			 return new ResponseEntity<Member>(addmember,HttpStatus.ACCEPTED);
+			 return new ResponseEntity<Member>(addmember,HttpStatus.CREATED);
 			
 		}
 		
@@ -145,18 +146,20 @@ public class UserController {
 		//vaccinCentral
 		// list pending
 		
-//		@GetMapping("/vaccincenter")
-//		
-//		public ResponseEntity<List < VaccinationCenter >> getListOfCenters(){	
-//		VaccinationCenter > > getListOfCenters( ){
-//			
-//			
-//		}
+		
+		@GetMapping("/vaccincenter")
+		public ResponseEntity<List<VaccinationCenter>> getAllVacciceInventory() {
+			
+		    List<VaccinationCenter> vInventory =  vaccincenterSer.getAllVaccineCenters();
+			
+			return new ResponseEntity<List<VaccinationCenter>>( vInventory , HttpStatus.FOUND );
+		}
+		
 		
 		@PostMapping("/vaccincenter")
 		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@RequestBody  VaccinationCenter vaccincenter) {
 			VaccinationCenter addVCenter=vaccincenterSer.addVaccineCenter(vaccincenter);
-			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.ACCEPTED);
+			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.CREATED);
 					
 		}
 		
@@ -168,7 +171,7 @@ public class UserController {
 			
 		}
 		
-		@GetMapping("/vaccincenter/{}")
+		@GetMapping("/vaccincenter/{centerid}")
 		public ResponseEntity<VaccinationCenter> getVaccineCenterHandler(@PathVariable("centerid") Integer centerid) {
 			VaccinationCenter getVCenter=vaccincenterSer.getVaccineCenters(centerid);
 			 return new ResponseEntity<VaccinationCenter>(getVCenter,HttpStatus.FOUND);
@@ -183,9 +186,8 @@ public class UserController {
 		}
 	
 		
-		// vaccinRegSer
+		// vaccinRegestration Serervice method
 		
-		// getall member pending
 		// get vacin reg pending
 		
 		@DeleteMapping("/vaccineReg")
@@ -206,6 +208,33 @@ public class UserController {
 			return new ResponseEntity<VaccineRegistration>(updatevaccinereg,HttpStatus.OK);
 			
 		}
+		
+		@GetMapping("/vaccineReg/{mobileNo}")
+		public ResponseEntity<List<Member>> getAllMember (Long mobileNo){
+			
+			List<Member> Vaccine=vaccinRegSer.getAllMember(mobileNo);
+			
+			return new ResponseEntity <List<Member>>(Vaccine,HttpStatus.FOUND);
+			
+		}
+		
+		
+		
+		
+		// vaccineService
+		
+		@GetMapping("/vaccineservice/{vaccineName}")
+		public ResponseEntity<Vaccine> getVaccineByname(@RequestBody String vaccineName){
+			Vaccine getvaccinbyname=vaccinser.getVaccineByName(vaccineName);
+			return new ResponseEntity<Vaccine>(getvaccinbyname,HttpStatus.FOUND);
+		}
+		
+		@GetMapping("/vaccineservice/{vaccineName}")
+		public ResponseEntity<Vaccine> getVaccineById(@RequestBody Integer vaccineId){
+			Vaccine getvaccinbyid=vaccinser.getVaccineById(vaccineId);
+			return new ResponseEntity<Vaccine>(getvaccinbyid,HttpStatus.FOUND);
+		}
+		
 		
 
 }
