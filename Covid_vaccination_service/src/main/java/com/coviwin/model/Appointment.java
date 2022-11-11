@@ -33,7 +33,7 @@ public class Appointment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long bookingID;
+	private Long bookingID;
 
 	@NotBlank(message = "Mobile Number is Mandatory")
 	@Size(max=10,message="Moblie Number length should be 10!")
