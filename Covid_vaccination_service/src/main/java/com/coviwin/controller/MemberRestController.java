@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
 import com.coviwin.exception.MemberException;
@@ -56,7 +58,7 @@ public class MemberRestController {
 	 
 	// idcard
 	@PostMapping("/idCard")
-	public ResponseEntity<IdCard> addidCardHandler(@RequestBody IdCard card) throws IdCardException{
+	public ResponseEntity<IdCard> addidCardHandler(@Valid @RequestBody IdCard card) throws IdCardException{
 		IdCard addId= idcard.addIdCard(card);
 		return new ResponseEntity<IdCard>(addId, HttpStatus.CREATED);
 		
@@ -78,7 +80,7 @@ public class MemberRestController {
 	 //appointment
 	 
 		@PostMapping("/appointment")
-		public ResponseEntity<Appointment> addAppointmentHandler(@RequestBody Appointment app) throws ApppintmentException {
+		public ResponseEntity<Appointment> addAppointmentHandler(@Valid @RequestBody Appointment app) throws ApppintmentException {
 			Appointment appoint =appointment.addAppointment(app);
 			return new ResponseEntity<Appointment>(appoint, HttpStatus.CREATED);
 		}
@@ -90,13 +92,13 @@ public class MemberRestController {
 		
 		
 		@DeleteMapping("/appointment")
-		public ResponseEntity<Boolean> deleteAppoinmentHandler(@RequestBody Appointment app) throws ApppintmentException{
+		public ResponseEntity<Boolean> deleteAppoinmentHandler(@Valid @RequestBody Appointment app) throws ApppintmentException{
 			 return new ResponseEntity<Boolean>(appointment.deleteAppointment(app), HttpStatus.OK);
 		}
 		
 		
 		@PutMapping("/appointment")
-		public ResponseEntity<Appointment> updateAppointmentHandler(@RequestBody Appointment app ) throws ApppintmentException {
+		public ResponseEntity<Appointment> updateAppointmentHandler(@Valid @RequestBody Appointment app ) throws ApppintmentException {
 			Appointment updateAppointment =appointment.updateAppointment(app);
 			return new ResponseEntity<Appointment>(updateAppointment,HttpStatus.OK);
 		}
@@ -105,14 +107,14 @@ public class MemberRestController {
 		// memberservice 
 		
 		@PostMapping("/member")
-		public ResponseEntity<Member> addMemberHandler(@RequestBody Member member) throws MemberException {
+		public ResponseEntity<Member> addMemberHandler(@Valid @RequestBody Member member) throws MemberException {
 			 Member addmember=memberSer.addMember(member);
 			 return new ResponseEntity<Member>(addmember,HttpStatus.CREATED);
 			
 		}
 		
 		@DeleteMapping("/member")
-		public ResponseEntity<Boolean> deleteMemberHandler(@RequestBody Member member) throws MemberException{
+		public ResponseEntity<Boolean> deleteMemberHandler(@Valid @RequestBody Member member) throws MemberException{
 			
 			return new  ResponseEntity<Boolean>(memberSer.deleteMember(member), HttpStatus.OK);
 			
@@ -140,7 +142,7 @@ public class MemberRestController {
 		}
 		
 		@PutMapping("/member")
-		public ResponseEntity<Member> updateMemberHandler(@RequestBody Member member ) throws MemberException {
+		public ResponseEntity<Member> updateMemberHandler(@Valid @RequestBody Member member ) throws MemberException {
 			Member updateMember =memberSer.updateMember(member);
 			return new ResponseEntity<Member>(updateMember,HttpStatus.OK);
 		}
@@ -160,7 +162,7 @@ public class MemberRestController {
 		
 		
 		@PostMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@RequestBody  VaccinationCenter vaccincenter) {
+		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) {
 			VaccinationCenter addVCenter=vaccincenterSer.addVaccineCenter(vaccincenter);
 			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.CREATED);
 					
@@ -168,7 +170,7 @@ public class MemberRestController {
 		
 		
 		@DeleteMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@RequestBody VaccinationCenter vaccincenter) {
+		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@Valid @RequestBody VaccinationCenter vaccincenter) {
 			
 			return new  ResponseEntity<VaccinationCenter>(vaccincenterSer.deleteVaccineCenter(vaccincenter), HttpStatus.OK);
 			
@@ -182,7 +184,7 @@ public class MemberRestController {
 		}
 		
 		@PutMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@RequestBody  VaccinationCenter vaccincenter) {
+		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) {
 			VaccinationCenter addVCenter=vaccincenterSer.updateVaccineCenter(vaccincenter);
 			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.OK);
 					
@@ -194,19 +196,19 @@ public class MemberRestController {
 		// get vacin reg pending
 		
 		@DeleteMapping("/vaccineReg")
-		public ResponseEntity<Boolean> deleteVaccineReg(@RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException{
+		public ResponseEntity<Boolean> deleteVaccineReg(@Valid @RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException{
 			return new ResponseEntity<Boolean>(vaccinRegSer.deleteVaccineRegistration(vaccinreg),HttpStatus.OK);
 		}
 		
 		@GetMapping("/vaccineReg")
-		public ResponseEntity<VaccineRegistration> getVaccineReg(@RequestBody Long mobileNo) throws VaccineRegistrationException{
+		public ResponseEntity<VaccineRegistration> getVaccineReg(@Valid @RequestBody Long mobileNo) throws VaccineRegistrationException{
 			VaccineRegistration getvaccinereg=vaccinRegSer.getVaccineRegistration(mobileNo);
 			return new ResponseEntity<VaccineRegistration>(getvaccinereg,HttpStatus.FOUND);
 			
 		}
 		
 		@PutMapping("/vaccineReg")
-		public ResponseEntity<VaccineRegistration> updateVaccineReg(@RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException{
+		public ResponseEntity<VaccineRegistration> updateVaccineReg(@Valid @RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException{
 			VaccineRegistration updatevaccinereg=vaccinRegSer.updateVaccineRegistration(vaccinreg);
 			return new ResponseEntity<VaccineRegistration>(updatevaccinereg,HttpStatus.OK);
 			
@@ -227,13 +229,13 @@ public class MemberRestController {
 		// vaccineService
 		
 		@GetMapping("/vaccineservice/{vaccineName}")
-		public ResponseEntity<Vaccine> getVaccineByname(@RequestBody String vaccineName){
+		public ResponseEntity<Vaccine> getVaccineByname(@Valid @RequestBody String vaccineName){
 			Vaccine getvaccinbyname=vaccinser.getVaccineByName(vaccineName);
 			return new ResponseEntity<Vaccine>(getvaccinbyname,HttpStatus.FOUND);
 		}
 		
 		@GetMapping("/vaccineservice/{vaccineName}")
-		public ResponseEntity<Vaccine> getVaccineById(@RequestBody Integer vaccineId){
+		public ResponseEntity<Vaccine> getVaccineById( @Valid @RequestBody Integer vaccineId){
 			Vaccine getvaccinbyid=vaccinser.getVaccineById(vaccineId);
 			return new ResponseEntity<Vaccine>(getvaccinbyid,HttpStatus.FOUND);
 		}
