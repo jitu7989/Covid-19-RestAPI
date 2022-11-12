@@ -12,6 +12,9 @@ import com.coviwin.model.VaccineRegistration;
 import com.coviwin.repo.VaccineRegistrationRepo;
 import com.coviwin.service.VaccineRegistrationService;
 
+import lombok.Data;
+
+@Data
 @Service
 public class VaccineRegistrationSerivceImpl implements VaccineRegistrationService {
 
@@ -36,12 +39,11 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
        return vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
 	}
 
+
 	@Override
 	public List<Member> getAllMember(Long mobileNo) throws VaccineRegistrationException {
 
-//          VaccineRegistration vacReg = vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
-//          
-//          return vacReg.getMembers();
+
 		
 		List<Member> list = vacRegRepo.getMembersByMobileNo(mobileNo);
 		
@@ -96,5 +98,6 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
 			throw new VaccineRegistrationException("No VaccineRegistration data found with details : " + reg);
 		
 	}
+
 
 }

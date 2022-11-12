@@ -1,5 +1,6 @@
 package com.coviwin.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.GeneratorType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -54,12 +54,14 @@ public class VaccinationCenter {
 	@Size(min = 6, max = 8)
 	private String pincode;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccinationCenter")
 	private List<Appointment> appointments;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JsonIgnore
+//	@JsonIgnore
 	private VaccineInventory vaccineInventory;
 
+	
+	
 }

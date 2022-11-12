@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -24,6 +26,7 @@ import lombok.NoArgsConstructor;
 public class VaccineInventory {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer vaccineInventoryId;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -35,4 +38,5 @@ public class VaccineInventory {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccineInventory")
 	private List<VaccinationCenter> vaccinationCenters;
+	
 }

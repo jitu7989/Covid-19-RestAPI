@@ -10,9 +10,8 @@ import com.coviwin.model.VaccineRegistration;
 
 public interface VaccineRegistrationRepo extends JpaRepository<VaccineRegistration, Long> {
 
-	@Query("select v.members from VaccineRegistration v where v.mobileNo=?1")
+	@Query("select v.members from VaccineRegistration v where v.mobileno=?1")
 	public List<Member> getMembersByMobileNo(Long mobileNo);
-	
 	
 	
 }

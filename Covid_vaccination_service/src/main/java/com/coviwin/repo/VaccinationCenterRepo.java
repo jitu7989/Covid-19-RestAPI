@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.coviwin.model.VaccinationCenter;
 
-public interface VaccinationCenterRepo extends JpaRepository<VaccinationCenter, Integer> {
+public interface VaccinationCenterRepo extends JpaRepository <VaccinationCenter,Integer> {
 
 }
