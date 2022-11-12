@@ -20,4 +20,12 @@ public class AdharCard {
 	@Digits(integer = 12,fraction = 12,message = "Length must be 12")
 	private long adharNo;
 
+	public long getAdharNo() {
+		return adharNo;
+	}
+
+	public void setAdharNo(long adharNo) {
+		this.adharNo = adharNo;
+	}
+
 }
