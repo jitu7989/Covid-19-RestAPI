@@ -35,4 +35,5 @@ public class VaccineInventory {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccineInventory")
 	private List<VaccinationCenter> vaccinationCenters;
+	
 }

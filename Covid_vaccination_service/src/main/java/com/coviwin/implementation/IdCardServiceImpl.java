@@ -1,5 +1,7 @@
 package com.coviwin.implementation;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +41,7 @@ public class IdCardServiceImpl implements IdCardService {
 	}
 
 	@Override
-	public IdCard getAdharCardByNo(Long adharNo)throws IdCardException {
+	public List<IdCard> getAdharCardByNo(Long adharNo)throws IdCardException {
 
 //		IdCard idcard = idCardRepo.getIdCardByAadharNo(adharNo);
 //		
@@ -50,12 +52,13 @@ public class IdCardServiceImpl implements IdCardService {
 		
 		AdharCard adharCard = new AdharCard(adharNo);
 		
-		IdCard idcard = idCardRepo.findByAdharCard(adharCard);
+		List<IdCard> idcard = idCardRepo.findByAdharcard( adharCard );
 		
-		if (idcard == null)
+		if (idcard == null || idcard.isEmpty() )
 			throw new IdCardException("Idcard not found with the  adharNo:" + adharNo);
-		else
-			return idcard;
+		
+		
+		return idcard;
 		
 		
 	}
@@ -64,22 +67,20 @@ public class IdCardServiceImpl implements IdCardService {
 	public IdCard addIdCard(IdCard id)throws IdCardException {
 
 		// checking IdCard based on AdharCard
-		IdCard id1 = idCardRepo.findByAdharCard(id.getAdharcard());
+		List< IdCard > id1 = idCardRepo.findByAdharcard( id.getAdharcard() );
 		
-		if(id1 == null) {
+		if(id1 == null || id1.isEmpty() ) {
 			
 			// checking IdCard based on Pancard
 			IdCard id2 = idCardRepo.findByPancard(id.getPancard());
 			
-			if(id2 == null) {
+			if( id2 == null )  return idCardRepo.save(id);
 				
-				  return idCardRepo.save(id);
-				
-			}else
-				throw new IdCardException("IdCard already registered with id : " + id.getId());
 			
-		}else
-			throw new IdCardException("IdCard already registered with id : " + id.getId());
+			
+		}
+			
+		throw new IdCardException("IdCard already registered with id : " + id.getId());
 		
 		
          
