@@ -37,7 +37,6 @@ import com.coviwin.service.VaccineService;
 
 @RestController
 @RequestMapping("/user")
-
 public class MemberRestController {
 	
 	@Autowired
@@ -67,9 +66,9 @@ public class MemberRestController {
 	}
 	 
 	 @GetMapping("/adharCard/{adharNo}")
-	 public ResponseEntity<IdCard> getAdharBynoHandler(@PathVariable  Long adharNo) throws IdCardException{
-		 IdCard adhardetails = idcard.getAdharCardByNo(adharNo);
-		 return new ResponseEntity<IdCard>(adhardetails, HttpStatus.FOUND);
+	 public ResponseEntity<List<IdCard>> getAdharBynoHandler(@PathVariable  Long adharNo) throws IdCardException{
+		 List<IdCard> adhardetails = idcard.getAdharCardByNo(adharNo);
+		 return new ResponseEntity<List<IdCard>>(adhardetails, HttpStatus.FOUND);
 		 
 	 }
 	 
@@ -225,22 +224,26 @@ public class MemberRestController {
 			
 		}
 		
-		
+
 		
 		
 		// vaccineService
 		
+
 		@GetMapping("/vaccineservice/{vaccineName}")
 		public ResponseEntity<List<Vaccine>> getVaccineByname(@Valid @RequestBody String vaccineName) throws VaccineException{
 			List<Vaccine> getvaccinbyname=vaccinser.getVaccineByName(vaccineName);
 			return new ResponseEntity<List<Vaccine>>(getvaccinbyname,HttpStatus.FOUND);
 		}
 		
+		
+		
 		@GetMapping("/vaccineservice/{vaccineId}")
 		public ResponseEntity<Vaccine> getVaccineById( @Valid @RequestBody Integer vaccineId) throws VaccineException{
 			Vaccine getvaccinbyid=vaccinser.getVaccineById(vaccineId);
-			return new ResponseEntity<Vaccine>(getvaccinbyid,HttpStatus.FOUND);
-		}
+		    return new ResponseEntity<Vaccine>(getvaccinbyid,HttpStatus.FOUND);
+        }
+		
 		
 		
 

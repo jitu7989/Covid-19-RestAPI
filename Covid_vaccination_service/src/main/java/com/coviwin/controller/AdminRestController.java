@@ -25,6 +25,8 @@ import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.Appointment;
+//import com.coviwin.exception.VaccineInventoryException;
+
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.VaccinationCenter;
@@ -109,16 +111,16 @@ public class AdminRestController {
 //	Id Card Service method
 	
 	@GetMapping("/getId")
-	public ResponseEntity< IdCard > getIdCardByAdhar( @Valid
+	public ResponseEntity< List<IdCard> > getIdCardByAdhar( @Valid
 													  @Digits(integer = 12,fraction = 12,message = "Length must be 12")
 													  @RequestParam(value = "adhar") Long adharLong ) throws IdCardException{
 		
-	 	IdCard idCard = idCardService.getAdharCardByNo(adharLong);
+		List<IdCard> idCard = idCardService.getAdharCardByNo(adharLong);
 		
 		return new ResponseEntity<>( idCard ,  HttpStatus.FOUND );
 	}
 	
-	@GetMapping("/getId")
+	@GetMapping("/getIdByPan")
 	public ResponseEntity< IdCard > getIdCardByPan( @RequestParam String pan ) throws IdCardException{
 		
 	 	IdCard idCard = idCardService.getPanCardByNumber( pan );
@@ -148,7 +150,7 @@ public class AdminRestController {
 	@GetMapping("/vaccineInventories/vaccine")
 
 	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine( @Valid @RequestBody Vaccine vaccine ) throws VaccineInventoryException{
-		 List<VaccineInventory> vi = vaccineInventoryService.getVaccineInventoryByVaccine(vaccine);
+         List<VaccineInventory> vi = vaccineInventoryService.getVaccineInventoryByVaccine(vaccine);
 		 return new ResponseEntity<List<VaccineInventory>>(  vi , HttpStatus.FOUND );
 	}
 	
@@ -201,12 +203,10 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccines")
-	public ResponseEntity<List<Vaccine>> getAllVaccine() throws VaccineException {
 		
-		List<Vaccine> vaccine =  vService.allVaccine();
-		
-
-		return new ResponseEntity<List<Vaccine>>( vaccine ,  HttpStatus.ACCEPTED);
+	public ResponseEntity< List< Vaccine >> getAllVaccine() throws VaccineException {
+		List< Vaccine > vaccine =  vService.allVaccine();
+		return new ResponseEntity< List<Vaccine> >( vaccine ,  HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/vaccine")
@@ -227,17 +227,17 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccine")
-	public ResponseEntity< List<Vaccine>  > getVaccineByName( @RequestParam String name) throws VaccineException{
+	public ResponseEntity< List< Vaccine > > getVaccineByName( @RequestParam String name) throws VaccineException{
 		
-		List<Vaccine> vaccine = vService.getVaccineByName(name);
+		List< Vaccine > vaccine = vService.getVaccineByName(name);
 		
-		return new ResponseEntity<List<Vaccine> >( vaccine , HttpStatus.ACCEPTED);
+		return new ResponseEntity<List< Vaccine >>( vaccine , HttpStatus.ACCEPTED);
 	}
 	
 	
 //	Member Service
 	
-	@GetMapping( "/member" )
+	@GetMapping( "/memberById" )
 	public ResponseEntity< Member > getMemberById( @RequestParam Integer id ) throws MemberException{
 		
 		Member member = memberService.getMemberbyId(id);
@@ -247,7 +247,7 @@ public class AdminRestController {
 		return new ResponseEntity<Member>( member , HttpStatus.FOUND );
 	}
 	
-
+//
 	
 	@PostMapping("/member")
 	public ResponseEntity< Member > addMember( @Valid @RequestBody  Member member ) throws MemberException{
@@ -282,7 +282,7 @@ public class AdminRestController {
 		return new ResponseEntity<Member>( member2 , HttpStatus.ACCEPTED );
 	}
 	
-	@GetMapping( "/member" )
+	@GetMapping( "/memberByAdhar" )
 	public ResponseEntity< Member > getMemberById( @RequestParam Long a ) throws MemberException{
 		
 		Member member = memberService.getMemberByAdharNo(a);

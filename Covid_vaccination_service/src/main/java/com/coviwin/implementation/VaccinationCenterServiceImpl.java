@@ -1,5 +1,7 @@
 package com.coviwin.implementation;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coviwin.exception.VaccinationCenterException;
+import com.coviwin.model.Appointment;
 import com.coviwin.model.VaccinationCenter;
+import com.coviwin.model.VaccineCount;
+import com.coviwin.model.VaccineInventory;
 import com.coviwin.repo.VaccinationCenterRepo;
 import com.coviwin.service.VaccinationCenterService;
 
@@ -37,11 +42,13 @@ public class VaccinationCenterServiceImpl  implements VaccinationCenterService{
 	}
 
 	@Override
-	public VaccinationCenter addVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {
+	public VaccinationCenter addVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {		
+		
 		
 		VaccinationCenter vc = vcrepo.save(center);
+		
 		if(vc==null)
-		throw new VaccinationCenterException("Unable to save");
+			throw new VaccinationCenterException("Unable to save");
 		
 		return vc;
 	}
