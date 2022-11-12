@@ -18,6 +18,7 @@ import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
 import com.coviwin.exception.MemberException;
 import com.coviwin.exception.VaccinationCenterException;
+import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineRegistrationException;
 import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
@@ -230,13 +231,13 @@ public class MemberRestController {
 		// vaccineService
 		
 		@GetMapping("/vaccineservice/{vaccineName}")
-		public ResponseEntity<Vaccine> getVaccineByname(@Valid @RequestBody String vaccineName){
-			Vaccine getvaccinbyname=vaccinser.getVaccineByName(vaccineName);
-			return new ResponseEntity<Vaccine>(getvaccinbyname,HttpStatus.FOUND);
+		public ResponseEntity<List<Vaccine>> getVaccineByname(@Valid @RequestBody String vaccineName) throws VaccineException{
+			List<Vaccine> getvaccinbyname=vaccinser.getVaccineByName(vaccineName);
+			return new ResponseEntity<List<Vaccine>>(getvaccinbyname,HttpStatus.FOUND);
 		}
 		
-		@GetMapping("/vaccineservice/{vaccineName}")
-		public ResponseEntity<Vaccine> getVaccineById( @Valid @RequestBody Integer vaccineId){
+		@GetMapping("/vaccineservice/{vaccineId}")
+		public ResponseEntity<Vaccine> getVaccineById( @Valid @RequestBody Integer vaccineId) throws VaccineException{
 			Vaccine getvaccinbyid=vaccinser.getVaccineById(vaccineId);
 			return new ResponseEntity<Vaccine>(getvaccinbyid,HttpStatus.FOUND);
 		}

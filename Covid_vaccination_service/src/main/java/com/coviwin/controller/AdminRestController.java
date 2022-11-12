@@ -20,13 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
-<<<<<<< HEAD
-import com.coviwin.exception.VaccineInventoryException;
-=======
 import com.coviwin.exception.MemberException;
+import com.coviwin.exception.VaccinationCenterException;
+import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.Appointment;
->>>>>>> 4fccf12cc1f5297f53f954949241415efa64714d
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.VaccinationCenter;
@@ -65,7 +63,7 @@ public class AdminRestController {
 //	Vaccination center Service method
 	
 	@GetMapping(value = "/centers")
-	public ResponseEntity<List<VaccinationCenter>> allVaccinationCenter(){
+	public ResponseEntity<List<VaccinationCenter>> allVaccinationCenter() throws VaccinationCenterException{
 		
 		List<VaccinationCenter> vcLS = vaccinationCenter.getAllVaccineCenters();
 		
@@ -74,7 +72,7 @@ public class AdminRestController {
 	}
 	
 	@GetMapping(value="/center")
-	public ResponseEntity<VaccinationCenter> getVaccineCenter(@RequestParam Integer id){
+	public ResponseEntity<VaccinationCenter> getVaccineCenter(@RequestParam Integer id) throws VaccinationCenterException{
 		
 		VaccinationCenter vcLS = vaccinationCenter.getVaccineCenters(id);
 		return  new ResponseEntity<VaccinationCenter>( vcLS , HttpStatus.FOUND );
@@ -82,7 +80,7 @@ public class AdminRestController {
 	}
 	
 	@PostMapping(value="/center")
-	public ResponseEntity< VaccinationCenter> addVaccineCenter( @Valid @RequestBody VaccinationCenter vaccinationCenter ){
+	public ResponseEntity< VaccinationCenter> addVaccineCenter( @Valid @RequestBody VaccinationCenter vaccinationCenter ) throws VaccinationCenterException{
 		
 		
 		VaccinationCenter vCenter = this.vaccinationCenter.addVaccineCenter(vaccinationCenter);
@@ -92,7 +90,7 @@ public class AdminRestController {
 	}
 	
 	@PutMapping(value = "/center")
-	public ResponseEntity< VaccinationCenter > updateCenter( @Valid @RequestBody VaccinationCenter vc ) {
+	public ResponseEntity< VaccinationCenter > updateCenter( @Valid @RequestBody VaccinationCenter vc ) throws VaccinationCenterException {
 		
 		VaccinationCenter retvc =  vaccinationCenter.updateVaccineCenter(vc);
 		
@@ -101,7 +99,7 @@ public class AdminRestController {
 	}
 	
 	@DeleteMapping(value = "/center")
-	public ResponseEntity<VaccinationCenter> deleteCenter( @Valid @RequestBody VaccinationCenter center ){
+	public ResponseEntity<VaccinationCenter> deleteCenter( @Valid @RequestBody VaccinationCenter center ) throws VaccinationCenterException{
 		
 		VaccinationCenter vCenter =  vaccinationCenter.deleteVaccineCenter( center );
 
@@ -194,7 +192,7 @@ public class AdminRestController {
 //	Vaccine Service Method
 	
 	@PostMapping("/vaccine")
-	public ResponseEntity<Vaccine> addVaccine( @Valid @RequestBody Vaccine vaccine){
+	public ResponseEntity<Vaccine> addVaccine( @Valid @RequestBody Vaccine vaccine) throws VaccineException{
 		
 		 Vaccine v = vService.addVaccine(vaccine);
 		 
@@ -203,16 +201,16 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccines")
-	public ResponseEntity<Vaccine> getAllVaccine() {
+	public ResponseEntity<List<Vaccine>> getAllVaccine() throws VaccineException {
 		
-		Vaccine vaccine =  vService.allVaccine();
+		List<Vaccine> vaccine =  vService.allVaccine();
 		
 
-		return new ResponseEntity<Vaccine>( vaccine ,  HttpStatus.ACCEPTED);
+		return new ResponseEntity<List<Vaccine>>( vaccine ,  HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/vaccine")
-	public ResponseEntity< Boolean > deleteVaccine( @Valid @RequestBody Vaccine v ){
+	public ResponseEntity< Boolean > deleteVaccine( @Valid @RequestBody Vaccine v ) throws VaccineException{
 		
 		Boolean boolean1 = vService.deleteVaccine( v );
 		
@@ -221,7 +219,7 @@ public class AdminRestController {
 	} 
 	
 	@GetMapping("/vaccine/{vaccine}")
-	public ResponseEntity< Vaccine > getVaccineById( @PathVariable("vaccine") Integer id ){
+	public ResponseEntity< Vaccine > getVaccineById( @PathVariable("vaccine") Integer id ) throws VaccineException{
 		
 		Vaccine vaccine =  vService.getVaccineById( id );
 		
@@ -229,11 +227,11 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccine")
-	public ResponseEntity< Vaccine > getVaccineByName( @RequestParam String name){
+	public ResponseEntity< List<Vaccine>  > getVaccineByName( @RequestParam String name) throws VaccineException{
 		
-		Vaccine vaccine = vService.getVaccineByName(name);
+		List<Vaccine> vaccine = vService.getVaccineByName(name);
 		
-		return new ResponseEntity<Vaccine>( vaccine , HttpStatus.ACCEPTED);
+		return new ResponseEntity<List<Vaccine> >( vaccine , HttpStatus.ACCEPTED);
 	}
 	
 	
