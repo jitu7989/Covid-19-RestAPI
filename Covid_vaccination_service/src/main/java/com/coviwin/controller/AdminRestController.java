@@ -2,6 +2,8 @@ package com.coviwin.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Digits;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -76,7 +78,7 @@ public class AdminRestController {
 	}
 	
 	@PostMapping(value="/center")
-	public ResponseEntity< VaccinationCenter> addVaccineCenter( @RequestBody VaccinationCenter vaccinationCenter ){
+	public ResponseEntity< VaccinationCenter> addVaccineCenter( @Valid @RequestBody VaccinationCenter vaccinationCenter ){
 		
 		
 		VaccinationCenter vCenter = this.vaccinationCenter.addVaccineCenter(vaccinationCenter);
@@ -86,7 +88,7 @@ public class AdminRestController {
 	}
 	
 	@PutMapping(value = "/center")
-	public ResponseEntity< VaccinationCenter > updateCenter( @RequestBody VaccinationCenter vc ) {
+	public ResponseEntity< VaccinationCenter > updateCenter( @Valid @RequestBody VaccinationCenter vc ) {
 		
 		VaccinationCenter retvc =  vaccinationCenter.updateVaccineCenter(vc);
 		
@@ -95,7 +97,7 @@ public class AdminRestController {
 	}
 	
 	@DeleteMapping(value = "/center")
-	public ResponseEntity<VaccinationCenter> deleteCenter( @RequestBody VaccinationCenter center ){
+	public ResponseEntity<VaccinationCenter> deleteCenter( @Valid @RequestBody VaccinationCenter center ){
 		
 		VaccinationCenter vCenter =  vaccinationCenter.deleteVaccineCenter( center );
 
@@ -105,7 +107,9 @@ public class AdminRestController {
 //	Id Card Service method
 	
 	@GetMapping("/getId")
-	public ResponseEntity< IdCard > getIdCardByAdhar( @RequestParam(value = "adhar") Long adharLong ) throws IdCardException{
+	public ResponseEntity< IdCard > getIdCardByAdhar( @Valid
+													  @Digits(integer = 12,fraction = 12,message = "Length must be 12")
+													  @RequestParam(value = "adhar") Long adharLong ) throws IdCardException{
 		
 	 	IdCard idCard = idCardService.getAdharCardByNo(adharLong);
 		
@@ -121,7 +125,7 @@ public class AdminRestController {
 	}
 	
 	@PostMapping("/addId")
-	public ResponseEntity< IdCard > addId( @RequestBody IdCard id ) throws IdCardException{
+	public ResponseEntity< IdCard > addId( @Valid @RequestBody IdCard id ) throws IdCardException{
 		
 	 	IdCard idCard = idCardService.addIdCard( id );
 		
@@ -140,7 +144,7 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccineInventories/vaccine")
-	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine( @RequestBody Vaccine vaccine ) throws VaccineInventoryException{
+	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine( @Valid @RequestBody Vaccine vaccine ) throws VaccineInventoryException{
 		
 		 List<VaccineInventory> vi = vaccineInventoryService.getVaccineInventoryByVaccine(vaccine);
 		 return new ResponseEntity<List<VaccineInventory>>(  vi , HttpStatus.FOUND );
@@ -156,7 +160,7 @@ public class AdminRestController {
 	} 
 	
 	@PostMapping("/vaccineInventory/{centerId}")
-	public ResponseEntity<VaccineInventory> addInventoryByCenter(@RequestBody VaccineInventory vInventory, @PathVariable("centerId") Integer centerId) throws VaccineInventoryException {
+	public ResponseEntity<VaccineInventory> addInventoryByCenter( @Valid @RequestBody VaccineInventory vInventory, @PathVariable("centerId") Integer centerId) throws VaccineInventoryException {
 		
 		VaccineInventory vaccineInventory =  vaccineInventoryService.addVaccineInventoryByCenter( centerId , vInventory);
 		
@@ -165,7 +169,7 @@ public class AdminRestController {
 	}
 	
 	@PostMapping("/vaccineInventory")
-	public ResponseEntity< VaccineInventory > updateVaccineCount( @RequestBody VaccineInventory vi , VaccineCount vc ) throws VaccineInventoryException{
+	public ResponseEntity< VaccineInventory > updateVaccineCount( @Valid @RequestBody VaccineInventory vi , VaccineCount vc ) throws VaccineInventoryException{
 		
 		VaccineInventory vInventory = vaccineInventoryService.addVaccineCount( vi , vc );
 		
@@ -174,7 +178,7 @@ public class AdminRestController {
 		
 	}
 	@PutMapping("/vaccineInventory")
-	public ResponseEntity< VaccineInventory > updateVaccineInventory( @RequestParam Integer id, @RequestBody VaccineInventory vi ) throws VaccineInventoryException{
+	public ResponseEntity< VaccineInventory > updateVaccineInventory( @Valid @RequestParam Integer id, @RequestBody VaccineInventory vi ) throws VaccineInventoryException{
 		
 		VaccineInventory vaccineInventory = vaccineInventoryService.updateVaccineInventory(id, vi);
 		
@@ -186,7 +190,7 @@ public class AdminRestController {
 //	Vaccine Service Method
 	
 	@PostMapping("/vaccine")
-	public ResponseEntity<Vaccine> addVaccine(@RequestBody Vaccine vaccine){
+	public ResponseEntity<Vaccine> addVaccine( @Valid @RequestBody Vaccine vaccine){
 		
 		 Vaccine v = vService.addVaccine(vaccine);
 		 
@@ -204,7 +208,7 @@ public class AdminRestController {
 	}
 	
 	@DeleteMapping("/vaccine")
-	public ResponseEntity< Boolean > deleteVaccine( @RequestBody Vaccine v ){
+	public ResponseEntity< Boolean > deleteVaccine( @Valid @RequestBody Vaccine v ){
 		
 		Boolean boolean1 = vService.deleteVaccine( v );
 		
@@ -244,7 +248,7 @@ public class AdminRestController {
 
 	
 	@PostMapping("/member")
-	public ResponseEntity< Member > addMember( @RequestBody  Member member ) throws MemberException{
+	public ResponseEntity< Member > addMember( @Valid @RequestBody  Member member ) throws MemberException{
 		
 		Member member2 = memberService.addMember(member);
 		
@@ -253,7 +257,7 @@ public class AdminRestController {
 	}
 	
 	@DeleteMapping("/member")
-	public ResponseEntity< Boolean > deleteMember( @RequestBody Member member ) throws MemberException{
+	public ResponseEntity< Boolean > deleteMember( @Valid @RequestBody Member member ) throws MemberException{
 		
 		Boolean member2 =  memberService.deleteMember(member);
 		
@@ -270,7 +274,7 @@ public class AdminRestController {
 	}
 	
 	@PutMapping("/member")
-	public ResponseEntity< Member > updateMember( @RequestBody Member member) throws MemberException{
+	public ResponseEntity< Member > updateMember( @Valid @RequestBody Member member) throws MemberException{
 		
 		Member member2 = memberService.updateMember(member);
 		return new ResponseEntity<Member>( member2 , HttpStatus.ACCEPTED );
@@ -294,7 +298,7 @@ public class AdminRestController {
 	}
 	
 	@DeleteMapping("/appointment")
-	public ResponseEntity<Boolean> deleteAppointment( @RequestBody Appointment appointment ) throws ApppintmentException{
+	public ResponseEntity<Boolean> deleteAppointment( @Valid @RequestBody Appointment appointment ) throws ApppintmentException{
 		
 		Boolean appointment2 =  appointmentService.deleteAppointment(appointment);
 		return new ResponseEntity<Boolean>(appointment2 , HttpStatus.ACCEPTED);
@@ -309,7 +313,7 @@ public class AdminRestController {
 	}
 	
 	@PutMapping("appointment")
-	public ResponseEntity<Appointment> updateAppointment( @RequestBody Appointment appointment ) throws ApppintmentException{
+	public ResponseEntity<Appointment> updateAppointment( @Valid @RequestBody Appointment appointment ) throws ApppintmentException{
 		
 		Appointment app = appointmentService.updateAppointment(appointment);
 		return new ResponseEntity< Appointment>(app,HttpStatus.ACCEPTED);
