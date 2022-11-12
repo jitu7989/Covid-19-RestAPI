@@ -2,9 +2,13 @@ package com.coviwin.exception;
 
 public class IdCardException extends Exception {
 
-	public IdCardException() {
-		// TODO Auto-generated constructor stub
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	public IdCardException() { }
 	
 
 	public IdCardException(String msg) {

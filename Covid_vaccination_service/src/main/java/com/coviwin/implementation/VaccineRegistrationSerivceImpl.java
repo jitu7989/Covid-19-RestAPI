@@ -12,11 +12,15 @@ import com.coviwin.model.VaccineRegistration;
 import com.coviwin.repo.VaccineRegistrationRepo;
 import com.coviwin.service.VaccineRegistrationService;
 
+import lombok.Data;
+
+@Data
 @Service
 public class VaccineRegistrationSerivceImpl implements VaccineRegistrationService {
 
 	@Autowired
 	private VaccineRegistrationRepo vacRegRepo;
+	
 	
 	@Override
 	public List<VaccineRegistration> getAllVaccineRegistration()throws VaccineRegistrationException {
@@ -35,12 +39,11 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
        return vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
 	}
 
+
 	@Override
 	public List<Member> getAllMember(Long mobileNo) throws VaccineRegistrationException {
 
-//          VaccineRegistration vacReg = vacRegRepo.findById(mobileNo).orElseThrow(() -> new VaccineRegistrationException("No VaccineRegistration found with mobileNO : " + mobileNo));
-//          
-//          return vacReg.getMember();
+
 		
 		List<Member> list = vacRegRepo.getMembersByMobileNo(mobileNo);
 		
@@ -52,22 +55,49 @@ public class VaccineRegistrationSerivceImpl implements VaccineRegistrationServic
 		
 	}
 
+	
 	@Override
 	public VaccineRegistration addVaccineRegistration(VaccineRegistration reg) {
-		// TODO Auto-generated method stub
-		return null;
+		 
+		List<Member> memberList = reg.getMembers();
+		
+		for(Member member : memberList) {
+			
+			member.setVaccineRegistration(reg);  // associating each member with VaccineRegistration
+		}
+		
+		return vacRegRepo.save(reg);
 	}
 
+	
 	@Override
 	public VaccineRegistration updateVaccineRegistration(VaccineRegistration reg) throws VaccineRegistrationException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Optional<VaccineRegistration> opt = vacRegRepo.findById(reg.getMobileno());
+		
+		if(opt.isPresent()) {
+			
+			return vacRegRepo.save(reg);
+			
+		}else
+			throw new VaccineRegistrationException("No VaccineRegistration data found with details : " + reg);
+		
 	}
 
 	@Override
 	public Boolean deleteVaccineRegistration(VaccineRegistration reg) throws VaccineRegistrationException {
-		// TODO Auto-generated method stub
-		return null;
+		 
+        Optional<VaccineRegistration> opt = vacRegRepo.findById(reg.getMobileno());
+		
+		if(opt.isPresent()) {
+			
+			vacRegRepo.delete(reg);
+			return true;
+			
+		}else
+			throw new VaccineRegistrationException("No VaccineRegistration data found with details : " + reg);
+		
 	}
+
 
 }

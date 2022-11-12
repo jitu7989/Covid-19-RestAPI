@@ -3,17 +3,26 @@ package com.coviwin.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.coviwin.exception.VaccineInventoryException;
+import com.coviwin.model.VaccinationCenter;
 import com.coviwin.model.Vaccine;
+import com.coviwin.model.VaccineCount;
 import com.coviwin.model.VaccineInventory;
 
 public interface VaccineInventoryService {
 
-	public List<VaccineInventory> allVaccineInventory();
-	public VaccineInventory addVaccineCount();
-	public VaccineInventory addVaccineIncentoryByCenter(Integer centerId);
-	public VaccineInventory updateVaccineInventory(Integer vaccineInventory);
-	public Boolean deleteVaccineInventory(Integer vaccineInventory);
-	public List<VaccineInventory> getVaccineInventoryByDate(LocalDate date);
-	public List<VaccineInventory> getVaccineInventoryByVaccine(Vaccine vaccine);
+	public List<VaccineInventory> allVaccineInventory()throws VaccineInventoryException;
+	
+	public VaccineInventory addVaccineCount(VaccineInventory vacInv, VaccineCount vacineCount)throws VaccineInventoryException;
+	
+	public VaccineInventory addVaccineInventoryByCenter(Integer centerId,VaccineInventory vInventory)throws VaccineInventoryException;
+	
+	public VaccineInventory updateVaccineInventory(Integer vaccineInventory,VaccineInventory vInventory)throws VaccineInventoryException;
+	
+	public Boolean deleteVaccineInventory(Integer vaccineInventory)throws VaccineInventoryException;
+	
+	public List<VaccineInventory> getVaccineInventoryByDate(LocalDate date)throws VaccineInventoryException;
+	
+	public List<VaccineInventory> getVaccineInventoryByVaccine(Vaccine vaccine)throws VaccineInventoryException;
 	
 }

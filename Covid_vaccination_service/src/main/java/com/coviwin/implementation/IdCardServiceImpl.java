@@ -19,20 +19,21 @@ public class IdCardServiceImpl implements IdCardService {
 	@Override
 	public IdCard getPanCardByNumber(String panNo)throws IdCardException {
 
-		IdCard idcard = idCardRepo.getIdCardByPanno(panNo);
-		
-		if(idcard != null) {
-		     return idcard;
-		}else
-			throw new IdCardException("Invalid PanNo...");
-		
-		
-//		IdCard idcard = idCardRepo.findByPancard(new PanCard(panNo));
+//		IdCard idcard = idCardRepo.getIdCardByPanno(panNo);
 //		
-//		if (idcard == null)
-//			throw new IdCardException("Idcard not found with the  panNo:" + panNo);
-//		else
-//			return idcard;
+//		if(idcard != null) {
+//		     return idcard;
+//		}else
+//			throw new IdCardException("Invalid PanNo...");
+		
+		PanCard panCard = new PanCard(panNo);
+		
+		IdCard idcard = idCardRepo.findByPancard(panCard);
+		
+		if (idcard == null)
+			throw new IdCardException("Idcard not found with the  panNo:" + panNo);
+		else
+			return idcard;
 		
 		
 	}
@@ -40,19 +41,48 @@ public class IdCardServiceImpl implements IdCardService {
 	@Override
 	public IdCard getAdharCardByNo(Long adharNo)throws IdCardException {
 
-		IdCard idcard = idCardRepo.getIdCardByAadharNo(adharNo);
+//		IdCard idcard = idCardRepo.getIdCardByAadharNo(adharNo);
+//		
+//		if(idcard != null) {
+//		     return idcard;
+//		}else
+//			throw new IdCardException("Invalid adharNo...");
 		
-		if(idcard != null) {
-		     return idcard;
-		}else
-			throw new IdCardException("Invalid adharNo...");
+		AdharCard adharCard = new AdharCard(adharNo);
+		
+		IdCard idcard = idCardRepo.findByAdharCard(adharCard);
+		
+		if (idcard == null)
+			throw new IdCardException("Idcard not found with the  adharNo:" + adharNo);
+		else
+			return idcard;
+		
 		
 	}
 
 	@Override
-	public IdCard addIdCard(IdCard id) {
+	public IdCard addIdCard(IdCard id)throws IdCardException {
 
-           return idCardRepo.save(id);
+		// checking IdCard based on AdharCard
+		IdCard id1 = idCardRepo.findByAdharCard(id.getAdharcard());
+		
+		if(id1 == null) {
+			
+			// checking IdCard based on Pancard
+			IdCard id2 = idCardRepo.findByPancard(id.getPancard());
+			
+			if(id2 == null) {
+				
+				  return idCardRepo.save(id);
+				
+			}else
+				throw new IdCardException("IdCard already registered with id : " + id.getId());
+			
+		}else
+			throw new IdCardException("IdCard already registered with id : " + id.getId());
+		
+		
+         
 	}
 
 }
