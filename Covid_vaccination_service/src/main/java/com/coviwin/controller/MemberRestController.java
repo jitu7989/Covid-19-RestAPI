@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
 import com.coviwin.exception.MemberException;
+import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.exception.VaccineRegistrationException;
 import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
@@ -153,7 +154,7 @@ public class MemberRestController {
 		
 		
 		@GetMapping("/vaccincenter")
-		public ResponseEntity<List<VaccinationCenter>> getAllVacciceInventory() {
+		public ResponseEntity<List<VaccinationCenter>> getAllVacciceInventory() throws VaccinationCenterException {
 			
 		    List<VaccinationCenter> vInventory =  vaccincenterSer.getAllVaccineCenters();
 			
@@ -162,7 +163,7 @@ public class MemberRestController {
 		
 		
 		@PostMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) {
+		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException {
 			VaccinationCenter addVCenter=vaccincenterSer.addVaccineCenter(vaccincenter);
 			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.CREATED);
 					
@@ -170,21 +171,21 @@ public class MemberRestController {
 		
 		
 		@DeleteMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@Valid @RequestBody VaccinationCenter vaccincenter) {
+		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@Valid @RequestBody VaccinationCenter vaccincenter) throws VaccinationCenterException {
 			
 			return new  ResponseEntity<VaccinationCenter>(vaccincenterSer.deleteVaccineCenter(vaccincenter), HttpStatus.OK);
 			
 		}
 		
 		@GetMapping("/vaccincenter/{centerid}")
-		public ResponseEntity<VaccinationCenter> getVaccineCenterHandler(@PathVariable("centerid") Integer centerid) {
+		public ResponseEntity<VaccinationCenter> getVaccineCenterHandler(@PathVariable("centerid") Integer centerid) throws VaccinationCenterException {
 			VaccinationCenter getVCenter=vaccincenterSer.getVaccineCenters(centerid);
 			 return new ResponseEntity<VaccinationCenter>(getVCenter,HttpStatus.FOUND);
 					
 		}
 		
 		@PutMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) {
+		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException {
 			VaccinationCenter addVCenter=vaccincenterSer.updateVaccineCenter(vaccincenter);
 			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.OK);
 					
