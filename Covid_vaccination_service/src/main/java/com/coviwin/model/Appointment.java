@@ -52,5 +52,6 @@ public class Appointment {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	VaccinationCenter vaccinationCenter;
+	
 
 }

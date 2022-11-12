@@ -9,12 +9,13 @@ public interface AppointmentService {
 
 	public List<Appointment> allAppointment()throws ApppintmentException;
 	
+
 	public Appointment getAppointment(Long bookingId)throws ApppintmentException;
 	
 	public Appointment addAppointment(Appointment app)throws ApppintmentException;
 	
 	public Appointment updateAppointment(Appointment app)throws ApppintmentException;
 	
-	public Boolean deleteAppointment(Appointment app)throws ApppintmentException;
+	public Boolean deleteAppointment(Appointment app)throws ApppintmentException; 
 	
 }

@@ -25,6 +25,7 @@ import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.Appointment;
+//import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.VaccinationCenter;
@@ -147,6 +148,7 @@ public class AdminRestController {
 	
 	@GetMapping("/vaccineInventories/vaccine")
 	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine( @Valid @RequestBody Vaccine vaccine ) throws VaccineInventoryException{
+
 		
 		 List<VaccineInventory> vi = vaccineInventoryService.getVaccineInventoryByVaccine(vaccine);
 		 return new ResponseEntity<List<VaccineInventory>>(  vi , HttpStatus.FOUND );

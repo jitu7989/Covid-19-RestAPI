@@ -84,9 +84,9 @@ public class GlobalExceptionHandler {
 	
 	
 	@ExceptionHandler( VaccineRegistrationException.class )
-	public ResponseEntity<ErrorDetail> vaccineRegistrationExceptionHandler( WebRequest wr ){
+	public ResponseEntity<ErrorDetail> vaccineRegistrationExceptionHandler(  VaccineRegistrationException vre , WebRequest wr ){
 		
-		ErrorDetail ed = new ErrorDetail( "" , wr.getDescription(false) );
+		ErrorDetail ed = new ErrorDetail( vre.getMessage() , wr.getDescription(false) );
 		
 		return new ResponseEntity<ErrorDetail>( ed , HttpStatus.BAD_REQUEST );
 	}
