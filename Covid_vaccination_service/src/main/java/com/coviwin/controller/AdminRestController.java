@@ -1,11 +1,8 @@
 package com.coviwin.controller;
 
-import java.security.PublicKey;
 import java.util.List;
 
-import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 
-import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
+import com.coviwin.exception.MemberException;
 import com.coviwin.exception.VaccineInventoryException;
+import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
+import com.coviwin.model.Member;
 import com.coviwin.model.VaccinationCenter;
 import com.coviwin.model.Vaccine;
+import com.coviwin.model.VaccineCount;
 import com.coviwin.model.VaccineInventory;
+import com.coviwin.service.AppointmentService;
 import com.coviwin.service.IdCardService;
+import com.coviwin.service.MemberService;
 import com.coviwin.service.VaccinationCenterService;
 import com.coviwin.service.VaccineInventoryService;
 import com.coviwin.service.VaccineService;
@@ -45,6 +49,12 @@ public class AdminRestController {
 	
 	@Autowired
 	public VaccineService vService; 
+	
+	@Autowired
+	public MemberService memberService;
+	
+	@Autowired
+	public AppointmentService appointmentService;
 	
 //	Vaccination center Service method
 	
@@ -145,6 +155,33 @@ public class AdminRestController {
 		return new ResponseEntity<Boolean>( fBoolean ,HttpStatus.ACCEPTED );
 	} 
 	
+	@PostMapping("/vaccineInventory/{centerId}")
+	public ResponseEntity<VaccineInventory> addInventoryByCenter(@RequestBody VaccineInventory vInventory, @PathVariable("centerId") Integer centerId) throws VaccineInventoryException {
+		
+		VaccineInventory vaccineInventory =  vaccineInventoryService.addVaccineInventoryByCenter( centerId , vInventory);
+		
+		
+		return new ResponseEntity<VaccineInventory>( vaccineInventory , HttpStatus.ACCEPTED );
+	}
+	
+	@PostMapping("/vaccineInventory")
+	public ResponseEntity< VaccineInventory > updateVaccineCount( @RequestBody VaccineInventory vi , VaccineCount vc ) throws VaccineInventoryException{
+		
+		VaccineInventory vInventory = vaccineInventoryService.addVaccineCount( vi , vc );
+		
+		
+		return new ResponseEntity<VaccineInventory>( vInventory , HttpStatus.ACCEPTED );
+		
+	}
+	@PutMapping("/vaccineInventory")
+	public ResponseEntity< VaccineInventory > updateVaccineInventory( @RequestParam Integer id, @RequestBody VaccineInventory vi ) throws VaccineInventoryException{
+		
+		VaccineInventory vaccineInventory = vaccineInventoryService.updateVaccineInventory(id, vi);
+		
+		return new ResponseEntity<VaccineInventory>( vaccineInventory , HttpStatus.ACCEPTED );
+	}
+	
+	
 	
 //	Vaccine Service Method
 	
@@ -157,6 +194,126 @@ public class AdminRestController {
 		 
 	}
 	
+	@GetMapping("/vaccines")
+	public ResponseEntity<Vaccine> getAllVaccine() {
+		
+		Vaccine vaccine =  vService.allVaccine();
+		
+
+		return new ResponseEntity<Vaccine>( vaccine ,  HttpStatus.ACCEPTED);
+	}
+	
+	@DeleteMapping("/vaccine")
+	public ResponseEntity< Boolean > deleteVaccine( @RequestBody Vaccine v ){
+		
+		Boolean boolean1 = vService.deleteVaccine( v );
+		
+		
+		return new ResponseEntity<Boolean>( boolean1 , HttpStatus.ACCEPTED );
+	} 
+	
+	@GetMapping("/vaccine/{vaccine}")
+	public ResponseEntity< Vaccine > getVaccineById( @PathVariable("vaccine") Integer id ){
+		
+		Vaccine vaccine =  vService.getVaccineById( id );
+		
+		return new ResponseEntity<Vaccine>( vaccine  , HttpStatus.FOUND );
+	}
+	
+	@GetMapping("/vaccine")
+	public ResponseEntity< Vaccine > getVaccineByName( @RequestParam String name){
+		
+		Vaccine vaccine = vService.getVaccineByName(name);
+		
+		return new ResponseEntity<Vaccine>( vaccine , HttpStatus.ACCEPTED);
+	}
+	
+	
+//	Member Service
+	
+	@GetMapping( "/member" )
+	public ResponseEntity< Member > getMemberById( @RequestParam Integer id ) throws MemberException{
+		
+		Member member = memberService.getMemberbyId(id);
+		
+		
+		
+		return new ResponseEntity<Member>( member , HttpStatus.FOUND );
+	}
+	
+
+	
+	@PostMapping("/member")
+	public ResponseEntity< Member > addMember( @RequestBody  Member member ) throws MemberException{
+		
+		Member member2 = memberService.addMember(member);
+		
+		return new  ResponseEntity<>( member2 , HttpStatus.ACCEPTED );
+		
+	}
+	
+	@DeleteMapping("/member")
+	public ResponseEntity< Boolean > deleteMember( @RequestBody Member member ) throws MemberException{
+		
+		Boolean member2 =  memberService.deleteMember(member);
+		
+		return new ResponseEntity<Boolean>( member2 , HttpStatus.ACCEPTED );
+	}
+	
+	
+	@GetMapping("/member")
+	public ResponseEntity< Member > getMemberByPanNo( @RequestParam  String p ) throws MemberException{
+		
+		Member member = memberService.getMemberByPanNo(p);
+			
+		return new ResponseEntity<Member>( member , HttpStatus.ACCEPTED );
+	}
+	
+	@PutMapping("/member")
+	public ResponseEntity< Member > updateMember( @RequestBody Member member) throws MemberException{
+		
+		Member member2 = memberService.updateMember(member);
+		return new ResponseEntity<Member>( member2 , HttpStatus.ACCEPTED );
+	}
+	
+	@GetMapping( "/member" )
+	public ResponseEntity< Member > getMemberById( @RequestParam Long a ) throws MemberException{
+		
+		Member member = memberService.getMemberByAdharNo(a);
+				
+		return new ResponseEntity<Member>( member , HttpStatus.FOUND );
+	}
+	
+//	AppointmentService Method
+
+	@GetMapping("/appointments")
+	public ResponseEntity< List<Appointment>> getAllAppointment() throws ApppintmentException{
+		
+		List<Appointment> ls = appointmentService.allAppointment();
+		return new ResponseEntity<List<Appointment>>( ls , HttpStatus.FOUND );
+	}
+	
+	@DeleteMapping("/appointment")
+	public ResponseEntity<Boolean> deleteAppointment( @RequestBody Appointment appointment ) throws ApppintmentException{
+		
+		Boolean appointment2 =  appointmentService.deleteAppointment(appointment);
+		return new ResponseEntity<Boolean>(appointment2 , HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/appointment")
+	public ResponseEntity< Appointment > getAppointment ( @RequestParam Long bid ) throws ApppintmentException{
+		
+		Appointment appointment =  appointmentService.getAppointment(bid);
+		
+		return new ResponseEntity<Appointment>(appointment,HttpStatus.FOUND);
+	}
+	
+	@PutMapping("appointment")
+	public ResponseEntity<Appointment> updateAppointment( @RequestBody Appointment appointment ) throws ApppintmentException{
+		
+		Appointment app = appointmentService.updateAppointment(appointment);
+		return new ResponseEntity< Appointment>(app,HttpStatus.ACCEPTED);
+	}
 	
 	
 }
