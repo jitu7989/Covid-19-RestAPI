@@ -16,4 +16,12 @@ public class PanCard {
 	@Pattern(regexp = "[A-Z]{5}[0-9]{4}[A-Z]{1}",message="Pan Card Number is Invalid!")
 	private String panNo;
 
+	public String getPanNo() {
+		return panNo;
+	}
+
+	public void setPanNo(String panNo) {
+		this.panNo = panNo;
+	}
+
 }

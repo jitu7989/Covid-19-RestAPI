@@ -41,4 +41,6 @@ public class Vaccine {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccine")
 	private List<Member> member;
 
+	
+	
 }

@@ -1,15 +1,19 @@
 package com.coviwin.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,10 +26,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class VaccinationCenter {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer code;
 
 	@NotNull(message = "Center name can not be null")
@@ -57,4 +61,6 @@ public class VaccinationCenter {
 	@JsonIgnore
 	private VaccineInventory vaccineInventory;
 
+	
+	
 }

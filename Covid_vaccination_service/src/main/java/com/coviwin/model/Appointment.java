@@ -1,6 +1,7 @@
 package com.coviwin.model;
 
 import java.time.LocalDate;
+import com.coviwin.enums.Slot;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.aspectj.weaver.patterns.ConcreteCflowPointcut.Slot;
+//import org.aspectj.weaver.patterns.ConcreteCflowPointcut.Slot;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,7 +34,7 @@ public class Appointment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long bookingID;
+	private Long bookingID;
 
 	@NotBlank(message = "Mobile Number is Mandatory")
 	@Size(max=10,message="Moblie Number length should be 10!")
@@ -53,5 +54,6 @@ public class Appointment {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	VaccinationCenter vaccinationCenter;
+	
 
 }
