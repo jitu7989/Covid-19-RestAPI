@@ -32,6 +32,9 @@ import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.Appointment;
+//import com.coviwin.exception.VaccineInventoryException;
+
+
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.VaccinationCenter;
@@ -176,12 +179,13 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccineInventories/vaccine")
+
 	public ResponseEntity< List< VaccineInventory > > getVaccineInventoryByVaccine(@RequestParam String key, @Valid @RequestBody Vaccine vaccine ) throws VaccineInventoryException, LoginException{
             	adminLoginService.authenthicate(key);
 		
 		 List<VaccineInventory> vi = vaccineInventoryService.getVaccineInventoryByVaccine(vaccine);
-		 return new ResponseEntity<List<VaccineInventory>>(  vi , HttpStatus.FOUND );
-	}
+
+
 	
 	
 	@DeleteMapping("/vaccineInventory/vi")
@@ -235,11 +239,9 @@ public class AdminRestController {
 	}
 	
 	@GetMapping("/vaccines")
+		
 	public ResponseEntity< List< Vaccine >> getAllVaccine() throws VaccineException {
-		
 		List< Vaccine > vaccine =  vService.allVaccine();
-		
-
 		return new ResponseEntity< List<Vaccine> >( vaccine ,  HttpStatus.ACCEPTED);
 	}
 	
