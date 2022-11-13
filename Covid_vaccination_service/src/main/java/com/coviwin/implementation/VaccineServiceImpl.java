@@ -2,7 +2,9 @@ package com.coviwin.implementation;
 
 
 import java.lang.reflect.Member;
+import com.coviwin.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,36 +54,27 @@ public class VaccineServiceImpl implements VaccineService {
 
 	@Override
 	public Vaccine addVaccine(Vaccine vaccine) throws VaccineException {
-		
 
 		if(vaccine.getVaccineid() != null) {
-			
-		Optional<Vaccine> op = vaccineRepo.findById(vaccine.getVaccineid());
+			Optional<Vaccine> op = vaccineRepo.findById(vaccine.getVaccineid());
 		
-		if(op.isPresent()) {
-			throw new VaccineException("vaccine already registered with vaccineId : " + vaccine.getVaccineid());
+			if(op.isPresent()) {
+				throw new VaccineException("vaccine already registered with vaccineId : " + vaccine.getVaccineid());
+			}
 		}
-
+		
 		List<com.coviwin.model.Member> memList = vaccine.getMember();
 		
 		if(memList != null) {
-		
-		 for(com.coviwin.model.Member mem : memList) {
-			 
-			 mem.setVaccine(vaccine); // associating each member with vaccine
-			 
-		 }
+			 for(com.coviwin.model.Member mem : memList) 
+				 mem.setVaccine(vaccine); // associating each member with vaccine
 		}
+		else vaccine.setMember( new ArrayList<>() );
 		 
-		 if(vaccine.getVaccinecount() != null)
-		 vaccine.getVaccinecount().setVaccine(vaccine);   // associating VaccineCount with vaccine
-		 
+		if(vaccine.getVaccinecount() != null)
+			vaccine.getVaccinecount().setVaccine(vaccine);   // associating VaccineCount with vaccine
 		
-		return vaccineRepo.save(vaccine);
-
-		}else
-			throw new VaccineException("id can't be null");
-		
+		return vaccineRepo.save(vaccine);		
 
 	}
 

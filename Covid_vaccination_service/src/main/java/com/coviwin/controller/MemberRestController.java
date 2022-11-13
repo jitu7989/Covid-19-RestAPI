@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -81,8 +82,8 @@ public class MemberRestController {
 	 //appointment
 	 
 		@PostMapping("/appointment")
-		public ResponseEntity<Appointment> addAppointmentHandler(@Valid @RequestBody Appointment app) throws ApppintmentException {
-			Appointment appoint =appointment.addAppointment(app);
+		public ResponseEntity<Appointment> addAppointmentHandler( @RequestParam Integer memid , @Valid @RequestBody Appointment app) throws ApppintmentException, MemberException {
+			Appointment appoint =appointment.addAppointment( memid,  app);
 			return new ResponseEntity<Appointment>(appoint, HttpStatus.CREATED);
 		}
 		
@@ -108,8 +109,8 @@ public class MemberRestController {
 		// memberservice 
 		
 		@PostMapping("/member")
-		public ResponseEntity<Member> addMemberHandler(@Valid @RequestBody Member member) throws MemberException {
-			 Member addmember=memberSer.addMember(member);
+		public ResponseEntity<Member> addMemberHandler( @RequestParam Integer id,@Valid @RequestBody Member member) throws MemberException, IdCardException {
+			 Member addmember=memberSer.addMember(id,member);
 			 return new ResponseEntity<Member>(addmember,HttpStatus.CREATED);
 			
 		}
@@ -122,21 +123,21 @@ public class MemberRestController {
 		}
 		
 		@GetMapping("/memberId/{IdCardId}")
-		public ResponseEntity<Member> getMemberByIdHandler(@PathVariable("IdCardId") Integer IdCardId) throws MemberException{
+		public ResponseEntity<Member> getMemberByIdHandler(@PathVariable("IdCardId") Integer IdCardId) throws MemberException, IdCardException{
 			 Member getmemberbyId=memberSer.getMemberbyId(IdCardId);
 			 return new ResponseEntity<Member>(getmemberbyId,HttpStatus.FOUND);
 			
 		}
 		
 		@GetMapping("/memberAdhar/{adharNo}")
-		public ResponseEntity<Member> getMemberByAdharHandler(@PathVariable("adharNo") Long adharNo) throws MemberException{
+		public ResponseEntity<Member> getMemberByAdharHandler(@PathVariable("adharNo") Long adharNo) throws MemberException, IdCardException{
 			 Member getmemberbyadhar=memberSer.getMemberByAdharNo(adharNo);
 			 return new ResponseEntity<Member>(getmemberbyadhar,HttpStatus.FOUND);
 			
 		}
 		
 		@GetMapping("/memberPan/{panNo}")
-		public ResponseEntity<Member> getMemberByPanHandler(@PathVariable("panNo") String panNo) throws MemberException{
+		public ResponseEntity<Member> getMemberByPanHandler(@PathVariable("panNo") String panNo) throws MemberException, IdCardException{
 			 Member getmemberbyPan=memberSer.getMemberByPanNo(panNo);
 			 return new ResponseEntity<Member>(getmemberbyPan,HttpStatus.FOUND);
 			

@@ -109,7 +109,7 @@ public class AdminRestController {
 	
 //	Id Card Service method
 	
-	@GetMapping("/getId")
+	@GetMapping("/getIdByAdhar")
 	public ResponseEntity< List<IdCard> > getIdCardByAdhar( @Valid
 													  @Digits(integer = 12,fraction = 12,message = "Length must be 12")
 													  @RequestParam(value = "adhar") Long adharLong ) throws IdCardException{
@@ -173,9 +173,12 @@ public class AdminRestController {
 	}
 	
 	@PostMapping("/vaccineInventory")
-	public ResponseEntity< VaccineInventory > updateVaccineCount( @Valid @RequestBody VaccineInventory vi , VaccineCount vc ) throws VaccineInventoryException{
+	public ResponseEntity< VaccineInventory > addVaccineCount( @RequestParam("v") Integer vacid,
+																  @RequestParam("vi") Integer vi, 
+																  @RequestBody VaccineCount vc ) 
+																		  throws VaccineInventoryException, VaccineException{
 		
-		VaccineInventory vInventory = vaccineInventoryService.addVaccineCount( vi , vc );
+		VaccineInventory vInventory = vaccineInventoryService.addVaccineCount( vacid, vi , vc );
 		
 		
 		return new ResponseEntity<VaccineInventory>( vInventory , HttpStatus.ACCEPTED );
@@ -240,21 +243,19 @@ public class AdminRestController {
 //	Member Service
 	
 	@GetMapping( "/memberById" )
-	public ResponseEntity< Member > getMemberById( @RequestParam Integer id ) throws MemberException{
+	public ResponseEntity< Member > getMemberById( @RequestParam Integer id ) throws MemberException, IdCardException{
+		
 		
 		Member member = memberService.getMemberbyId(id);
-		
-		
-		
 		return new ResponseEntity<Member>( member , HttpStatus.FOUND );
 	}
 	
 //
 	
 	@PostMapping("/member")
-	public ResponseEntity< Member > addMember( @Valid @RequestBody  Member member ) throws MemberException{
+	public ResponseEntity< Member > addMember( @RequestParam Integer id,@Valid @RequestBody  Member member ) throws MemberException, IdCardException{
 		
-		Member member2 = memberService.addMember(member);
+		Member member2 = memberService.addMember( id, member);
 		
 		return new  ResponseEntity<>( member2 , HttpStatus.ACCEPTED );
 		
@@ -270,7 +271,7 @@ public class AdminRestController {
 	
 	
 	@GetMapping("/member")
-	public ResponseEntity< Member > getMemberByPanNo( @RequestParam  String p ) throws MemberException{
+	public ResponseEntity< Member > getMemberByPanNo( @RequestParam  String p ) throws MemberException, IdCardException{
 		
 		Member member = memberService.getMemberByPanNo(p);
 			
@@ -285,7 +286,7 @@ public class AdminRestController {
 	}
 	
 	@GetMapping( "/memberByAdhar" )
-	public ResponseEntity< Member > getMemberById( @RequestParam Long a ) throws MemberException{
+	public ResponseEntity< Member > getMemberByAdhar( @RequestParam Long a ) throws MemberException, IdCardException{
 		
 		Member member = memberService.getMemberByAdharNo(a);
 				

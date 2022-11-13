@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.VaccinationCenter;
 import com.coviwin.model.Vaccine;
@@ -14,6 +15,7 @@ import com.coviwin.model.VaccineCount;
 import com.coviwin.model.VaccineInventory;
 import com.coviwin.repo.VaccinationCenterRepo;
 import com.coviwin.repo.VaccineInventoryRepo;
+import com.coviwin.repo.VaccineRepo;
 import com.coviwin.service.VaccineInventoryService;
 
 @Service
@@ -25,6 +27,8 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 	@Autowired
 	private VaccinationCenterRepo vacCenterRepo;
 	
+	@Autowired
+	private VaccineRepo vacRepo;
 	
 	@Override
 	public List<VaccineInventory> allVaccineInventory()throws VaccineInventoryException {
@@ -39,14 +43,18 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 
 	
 	@Override
-	public VaccineInventory addVaccineCount(VaccineInventory vacInv, VaccineCount vacineCount)throws VaccineInventoryException {
+	public VaccineInventory addVaccineCount(Integer vacid, Integer vacInv, VaccineCount vacineCount)throws VaccineInventoryException, VaccineException {
 
 		
-		VaccineInventory vaccineInventory = vacInvRepo.findById(vacInv.getVaccineInventoryId())
-				                            .orElseThrow(() -> new VaccineInventoryException("No VaccineInventory found with details : "+ vacInv));
-		
-	vacineCount.setVaccineInventory(vacInv); // associating vacineCount with VaccineInventory
+	VaccineInventory vaccineInventory = vacInvRepo.findById(vacInv)
+				                                   .orElseThrow(() -> new VaccineInventoryException("No VaccineInventory found with details : "+ vacInv));
 	
+	Vaccine vaccine = vacRepo.findById(vacid)
+							 .orElseThrow( ()->new VaccineException( "No vaccine found with that id" ) );
+	
+	vacineCount.setVaccineInventory( vaccineInventory ); // associating vacineCount with VaccineInventory
+	vacineCount.setVaccine(vaccine);
+	vaccine.setVaccinecount(vacineCount);
 	vaccineInventory.getVaccineCounts().add(vacineCount);
 	
 	return vacInvRepo.save(vaccineInventory);
