@@ -1,4 +1,4 @@
-package com.coviwin.service;
+package com.coviwin.implementation;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -12,6 +12,7 @@ import com.coviwin.model.CurrentAdminSession;
 import com.coviwin.model.LoginDTO;
 import com.coviwin.repo.AdminDao;
 import com.coviwin.repo.CurrentAdminSessionDao;
+import com.coviwin.service.AdminLoginService;
 
 import net.bytebuddy.utility.RandomString;
 @Service
@@ -22,6 +23,8 @@ public class AdminLoginServiceImpl implements AdminLoginService{
 	@Autowired
 	private CurrentAdminSessionDao currentdao;
 
+	
+	
 	@Override
 	public String loginAccount(LoginDTO dto) throws LoginException {
 		Admin existingCustomer = customerdao.findByMobileNo(dto.getMobileNo());
@@ -54,6 +57,16 @@ public class AdminLoginServiceImpl implements AdminLoginService{
 		}
 		currentdao.delete(validCustomerSession);
 		return "Logged Out";
+	}
+
+	@Override
+	public Boolean authenthicate(String key) throws LoginException {
+		
+		CurrentAdminSession cdSession = currentdao.findByUuid(key);
+		
+		if(cdSession==null) throw new LoginException("Login in and retry");
+		
+		return true;
 	}
 
 }

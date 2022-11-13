@@ -36,7 +36,6 @@ public class LoginController {
 		return lservice.logoutAccount(key);
 	}
 	
-	
 	// for user login
 	@PostMapping("/userlogin")
 	public ResponseEntity<String>  logInUser(@RequestBody UserDTO userDTO) throws LoginException {

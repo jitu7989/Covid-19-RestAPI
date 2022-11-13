@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.awt.RenderingHints.Key;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
+import com.coviwin.exception.LoginException;
 import com.coviwin.exception.MemberException;
 import com.coviwin.exception.UserException;
 import com.coviwin.exception.VaccinationCenterException;
@@ -32,6 +35,7 @@ import com.coviwin.model.VaccineRegistration;
 import com.coviwin.service.AppointmentService;
 import com.coviwin.service.IdCardService;
 import com.coviwin.service.MemberService;
+import com.coviwin.service.UserLoginService;
 import com.coviwin.service.UserService;
 import com.coviwin.service.VaccinationCenterService;
 import com.coviwin.service.VaccineRegistrationService;
@@ -64,38 +68,46 @@ public class MemberRestController {
 	@Autowired
 	private UserService userser;
 	
+	@Autowired
+	private UserLoginService userLoginService;
+	
 	@PostMapping("/users")
-	public ResponseEntity<User>  saveUser(@RequestBody User user) throws UserException {
+	public ResponseEntity<User>  saveUser(@RequestParam String key , @RequestBody User user) throws UserException, LoginException {
+		userLoginService.authenthicate(key);
 		User savedUser=  userser.registerUser(user);
 		return new ResponseEntity<User>(savedUser,HttpStatus.CREATED);
 	}
 
 	// to update user by passing key
 	@PutMapping("/update")
-	public ResponseEntity<User> updateUser(@RequestBody User user, @RequestParam(required = false) String key) throws UserException {
-	 User update=userser.updateUser(user, key);
-	 return new ResponseEntity<User>(update,HttpStatus.OK);
+	public ResponseEntity<User> updateUser(@RequestBody User user, @RequestParam(required = false) String key) throws UserException, LoginException {
+		 userLoginService.authenthicate(key);
+		 User update=userser.updateUser(user, key);
+		 return new ResponseEntity<User>(update,HttpStatus.OK);
 
 		
 	}
 	
 	// idcard
 	@PostMapping("/idCard")
-	public ResponseEntity<IdCard> addidCardHandler(@Valid @RequestBody IdCard card) throws IdCardException{
+	public ResponseEntity<IdCard> addidCardHandler(@RequestParam String key ,@Valid @RequestBody IdCard card) throws IdCardException, LoginException{
+		userLoginService.authenthicate(key);
 		IdCard addId= idcard.addIdCard(card);
 		return new ResponseEntity<IdCard>(addId, HttpStatus.CREATED);
 		
 	}
 	 
 	 @GetMapping("/adharCard/{adharNo}")
-	 public ResponseEntity<List<IdCard>> getAdharBynoHandler(@PathVariable  Long adharNo) throws IdCardException{
+	 public ResponseEntity<List<IdCard>> getAdharBynoHandler(@RequestParam String key ,@PathVariable  Long adharNo) throws IdCardException, LoginException{
+		 userLoginService.authenthicate(key);
 		 List<IdCard> adhardetails = idcard.getAdharCardByNo(adharNo);
 		 return new ResponseEntity<List<IdCard>>(adhardetails, HttpStatus.FOUND);
 		 
 	 }
 	 
 	 @GetMapping("/panCard/{panNo}")
-	 public ResponseEntity<IdCard> getPanByNoHandler(@PathVariable String panNo) throws IdCardException{
+	 public ResponseEntity<IdCard> getPanByNoHandler(@RequestParam String key ,@PathVariable String panNo) throws IdCardException, LoginException{
+		 userLoginService.authenthicate(key);
 		 IdCard pandetails= idcard.getPanCardByNumber(panNo);
 		 return new ResponseEntity<IdCard>(pandetails, HttpStatus.FOUND); 
 	 }
@@ -103,25 +115,29 @@ public class MemberRestController {
 	 //appointment
 	 
 		@PostMapping("/appointment")
-		public ResponseEntity<Appointment> addAppointmentHandler( @RequestParam Integer memid , @Valid @RequestBody Appointment app) throws ApppintmentException, MemberException {
+		public ResponseEntity<Appointment> addAppointmentHandler( @RequestParam String key ,@RequestParam Integer memid , @Valid @RequestBody Appointment app) throws ApppintmentException, MemberException, LoginException {
+			userLoginService.authenthicate(key);
 			Appointment appoint =appointment.addAppointment( memid,  app);
 			return new ResponseEntity<Appointment>(appoint, HttpStatus.CREATED);
 		}
 		
 		@GetMapping("/appointment/{bookingID}")
-		public ResponseEntity<Appointment> getAppointmentHandler(@PathVariable("bookingID") Long bookingID) throws ApppintmentException {
+		public ResponseEntity<Appointment> getAppointmentHandler(@RequestParam String key ,@PathVariable("bookingID") Long bookingID) throws ApppintmentException, LoginException {
+			userLoginService.authenthicate(key);
 			return new ResponseEntity<Appointment>(appointment.getAppointment(bookingID),HttpStatus.FOUND);
 		}
 		
 		
 		@DeleteMapping("/appointment")
-		public ResponseEntity<Boolean> deleteAppoinmentHandler(@Valid @RequestBody Appointment app) throws ApppintmentException{
-			 return new ResponseEntity<Boolean>(appointment.deleteAppointment(app), HttpStatus.OK);
+		public ResponseEntity<Boolean> deleteAppoinmentHandler(@RequestParam String key ,@Valid @RequestBody Appointment app) throws ApppintmentException, LoginException{
+			userLoginService.authenthicate(key); 
+			return new ResponseEntity<Boolean>(appointment.deleteAppointment(app), HttpStatus.OK);
 		}
 		
 		
 		@PutMapping("/appointment")
-		public ResponseEntity<Appointment> updateAppointmentHandler(@Valid @RequestBody Appointment app ) throws ApppintmentException {
+		public ResponseEntity<Appointment> updateAppointmentHandler(@RequestParam String key ,@Valid @RequestBody Appointment app ) throws ApppintmentException, LoginException {
+			userLoginService.authenthicate(key);
 			Appointment updateAppointment =appointment.updateAppointment(app);
 			return new ResponseEntity<Appointment>(updateAppointment,HttpStatus.OK);
 		}
@@ -130,42 +146,50 @@ public class MemberRestController {
 		// memberservice 
 		
 		@PostMapping("/member")
-		public ResponseEntity<Member> addMemberHandler( @RequestParam Integer id,@Valid @RequestBody Member member) throws MemberException, IdCardException {
-			 Member addmember=memberSer.addMember(id,member);
+		public ResponseEntity<Member> addMemberHandler( @RequestParam String key ,@RequestParam Integer id,@Valid @RequestBody Member member) throws MemberException, IdCardException, LoginException {
+			userLoginService.authenthicate(key); 
+			Member addmember=memberSer.addMember(id,member);
 			 return new ResponseEntity<Member>(addmember,HttpStatus.CREATED);
 			
 		}
 		
 		@DeleteMapping("/member")
-		public ResponseEntity<Boolean> deleteMemberHandler(@Valid @RequestBody Member member) throws MemberException{
-			
+		public ResponseEntity<Boolean> deleteMemberHandler(@RequestParam String key ,@Valid @RequestBody Member member) throws MemberException, LoginException{
+			userLoginService.authenthicate(key);
 			return new  ResponseEntity<Boolean>(memberSer.deleteMember(member), HttpStatus.OK);
 			
 		}
 		
 		@GetMapping("/memberId/{IdCardId}")
-		public ResponseEntity<Member> getMemberByIdHandler(@PathVariable("IdCardId") Integer IdCardId) throws MemberException, IdCardException{
-			 Member getmemberbyId=memberSer.getMemberbyId(IdCardId);
+		public ResponseEntity<Member> getMemberByIdHandler(@RequestParam String key ,@PathVariable("IdCardId") Integer IdCardId) throws MemberException, IdCardException, LoginException{
+			userLoginService.authenthicate(key); 
+			Member getmemberbyId=memberSer.getMemberbyId(IdCardId);
 			 return new ResponseEntity<Member>(getmemberbyId,HttpStatus.FOUND);
 			
 		}
 		
 		@GetMapping("/memberAdhar/{adharNo}")
-		public ResponseEntity<Member> getMemberByAdharHandler(@PathVariable("adharNo") Long adharNo) throws MemberException, IdCardException{
+		public ResponseEntity<Member> getMemberByAdharHandler(@RequestParam String key ,@PathVariable("adharNo") Long adharNo) throws MemberException, IdCardException, LoginException{
+			 userLoginService.authenthicate(key);
+			 
 			 Member getmemberbyadhar=memberSer.getMemberByAdharNo(adharNo);
 			 return new ResponseEntity<Member>(getmemberbyadhar,HttpStatus.FOUND);
 			
 		}
 		
 		@GetMapping("/memberPan/{panNo}")
-		public ResponseEntity<Member> getMemberByPanHandler(@PathVariable("panNo") String panNo) throws MemberException, IdCardException{
+		public ResponseEntity<Member> getMemberByPanHandler(@RequestParam String key ,@PathVariable("panNo") String panNo) throws MemberException, IdCardException, LoginException{
+			 
+			 userLoginService.authenthicate(key);
 			 Member getmemberbyPan=memberSer.getMemberByPanNo(panNo);
 			 return new ResponseEntity<Member>(getmemberbyPan,HttpStatus.FOUND);
 			
 		}
 		
 		@PutMapping("/member")
-		public ResponseEntity<Member> updateMemberHandler(@Valid @RequestBody Member member ) throws MemberException {
+		public ResponseEntity<Member> updateMemberHandler(@RequestParam String key ,@Valid @RequestBody Member member ) throws MemberException , LoginException{
+			
+			userLoginService.authenthicate(key);
 			Member updateMember =memberSer.updateMember(member);
 			return new ResponseEntity<Member>(updateMember,HttpStatus.OK);
 		}
@@ -176,8 +200,8 @@ public class MemberRestController {
 		
 		
 		@GetMapping("/vaccincenter")
-		public ResponseEntity<List<VaccinationCenter>> getAllVacciceInventory() throws VaccinationCenterException {
-			
+		public ResponseEntity<List<VaccinationCenter>> getAllVacciceInventory(@RequestParam String key ) throws VaccinationCenterException , LoginException{
+			userLoginService.authenthicate(key);
 		    List<VaccinationCenter> vInventory =  vaccincenterSer.getAllVaccineCenters();
 			
 			return new ResponseEntity<List<VaccinationCenter>>( vInventory , HttpStatus.FOUND );
@@ -185,7 +209,9 @@ public class MemberRestController {
 		
 		
 		@PostMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException {
+		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@RequestParam String key ,@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException , LoginException{
+			
+			userLoginService.authenthicate(key);
 			VaccinationCenter addVCenter=vaccincenterSer.addVaccineCenter(vaccincenter);
 			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.CREATED);
 					
@@ -193,21 +219,25 @@ public class MemberRestController {
 		
 		
 		@DeleteMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@Valid @RequestBody VaccinationCenter vaccincenter) throws VaccinationCenterException {
-			
+		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@RequestParam String key ,@Valid @RequestBody VaccinationCenter vaccincenter) throws VaccinationCenterException , LoginException{
+			userLoginService.authenthicate(key);
 			return new  ResponseEntity<VaccinationCenter>(vaccincenterSer.deleteVaccineCenter(vaccincenter), HttpStatus.OK);
 			
 		}
 		
 		@GetMapping("/vaccincenter/{centerid}")
-		public ResponseEntity<VaccinationCenter> getVaccineCenterHandler(@PathVariable("centerid") Integer centerid) throws VaccinationCenterException {
+		public ResponseEntity<VaccinationCenter> getVaccineCenterHandler(@RequestParam String key ,@PathVariable("centerid") Integer centerid) throws VaccinationCenterException , LoginException{
+			
+			userLoginService.authenthicate(key);
 			VaccinationCenter getVCenter=vaccincenterSer.getVaccineCenters(centerid);
 			 return new ResponseEntity<VaccinationCenter>(getVCenter,HttpStatus.FOUND);
 					
 		}
 		
 		@PutMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException {
+		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@RequestParam String key ,@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException , LoginException{
+			
+			userLoginService.authenthicate(key);
 			VaccinationCenter addVCenter=vaccincenterSer.updateVaccineCenter(vaccincenter);
 			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.OK);
 					
@@ -219,27 +249,32 @@ public class MemberRestController {
 		// get vacin reg pending
 		
 		@DeleteMapping("/vaccineReg")
-		public ResponseEntity<Boolean> deleteVaccineReg(@Valid @RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException{
+		public ResponseEntity<Boolean> deleteVaccineReg(@RequestParam String key ,@Valid @RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException, LoginException{
+			userLoginService.authenthicate(key);
+			
 			return new ResponseEntity<Boolean>(vaccinRegSer.deleteVaccineRegistration(vaccinreg),HttpStatus.OK);
 		}
 		
 		@GetMapping("/vaccineReg")
-		public ResponseEntity<VaccineRegistration> getVaccineReg(@Valid @RequestBody Long mobileNo) throws VaccineRegistrationException{
+		public ResponseEntity<VaccineRegistration> getVaccineReg(@RequestParam String key ,@Valid @RequestBody Long mobileNo) throws VaccineRegistrationException, LoginException{
+			userLoginService.authenthicate(key);
 			VaccineRegistration getvaccinereg=vaccinRegSer.getVaccineRegistration(mobileNo);
 			return new ResponseEntity<VaccineRegistration>(getvaccinereg,HttpStatus.FOUND);
 			
 		}
 		
 		@PutMapping("/vaccineReg")
-		public ResponseEntity<VaccineRegistration> updateVaccineReg(@Valid @RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException{
+		public ResponseEntity<VaccineRegistration> updateVaccineReg(@RequestParam String key ,@Valid @RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException, LoginException{
+			
+			userLoginService.authenthicate(key);
 			VaccineRegistration updatevaccinereg=vaccinRegSer.updateVaccineRegistration(vaccinreg);
 			return new ResponseEntity<VaccineRegistration>(updatevaccinereg,HttpStatus.OK);
 			
 		}
 		
 		@GetMapping("/vaccineReg/{mobileNo}")
-		public ResponseEntity<List<Member>> getAllMember (Long mobileNo) throws VaccineRegistrationException{
-			
+		public ResponseEntity<List<Member>> getAllMember (@RequestParam String key ,Long mobileNo) throws VaccineRegistrationException, LoginException{
+			userLoginService.authenthicate(key);
 			List<Member> Vaccine=vaccinRegSer.getAllMember(mobileNo);
 			
 			return new ResponseEntity <List<Member>>(Vaccine,HttpStatus.FOUND);
@@ -252,13 +287,17 @@ public class MemberRestController {
 		// vaccineService
 		
 		@GetMapping("/vaccineserviceByName/{vaccineName}")
-		public ResponseEntity< List< Vaccine > > getVaccineByname(@Valid @RequestBody String vaccineName) throws VaccineException{
+		public ResponseEntity< List< Vaccine > > getVaccineByname(@RequestParam String key ,@Valid @RequestBody String vaccineName) throws VaccineException, LoginException{
+			userLoginService.authenthicate(key);
+			
 			List< Vaccine > getvaccinbyname=vaccinser.getVaccineByName(vaccineName);
 			return new ResponseEntity<List< Vaccine >>(getvaccinbyname,HttpStatus.FOUND);
 		}
 		
 		@GetMapping("/vaccineserviceById/{vaccineName}")
-		public ResponseEntity<Vaccine> getVaccineById( @Valid @RequestBody Integer vaccineId) throws VaccineException{
+		public ResponseEntity<Vaccine> getVaccineById( @RequestParam String key ,@Valid @RequestBody Integer vaccineId) throws VaccineException, LoginException{
+			userLoginService.authenthicate(key);
+			
 			Vaccine getvaccinbyid = vaccinser.getVaccineById(vaccineId);
 			return new ResponseEntity<Vaccine>(getvaccinbyid,HttpStatus.FOUND);
 		}

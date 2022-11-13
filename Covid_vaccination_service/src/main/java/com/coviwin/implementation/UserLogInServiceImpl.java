@@ -1,4 +1,4 @@
-package com.coviwin.service;
+package com.coviwin.implementation;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coviwin.exception.LoginException;
+import com.coviwin.model.CurrentAdminSession;
 import com.coviwin.model.CurrentUserSession;
 import com.coviwin.model.User;
 import com.coviwin.model.UserDTO;
 import com.coviwin.repo.UserDao;
 import com.coviwin.repo.UserSessionDAO;
+import com.coviwin.service.UserLoginService;
 
 import net.bytebuddy.utility.RandomString;
 
@@ -62,6 +64,15 @@ CurrentUserSession currUserOpt=userSessionDAO.findByUuid(key);
 		}
 		userSessionDAO.delete(currUserOpt);
 		return "Logged Out";
+	}
+
+	@Override
+	public Boolean authenthicate(String key) throws LoginException {
+		CurrentUserSession cdSession = userSessionDAO.findByUuid(key);
+		
+		if(cdSession==null) throw new LoginException("Login in and retry");
+		
+		return true;
 	}
 	
 	

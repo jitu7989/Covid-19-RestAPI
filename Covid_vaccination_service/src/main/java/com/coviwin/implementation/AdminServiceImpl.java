@@ -1,4 +1,4 @@
-package com.coviwin.service;
+package com.coviwin.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +8,7 @@ import com.coviwin.model.Admin;
 import com.coviwin.model.CurrentAdminSession;
 import com.coviwin.repo.AdminDao;
 import com.coviwin.repo.CurrentAdminSessionDao;
+import com.coviwin.service.AdminService;
 
 
 @Service
