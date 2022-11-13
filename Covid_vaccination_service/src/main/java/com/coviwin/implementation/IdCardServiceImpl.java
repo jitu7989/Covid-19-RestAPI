@@ -21,12 +21,7 @@ public class IdCardServiceImpl implements IdCardService {
 	@Override
 	public IdCard getPanCardByNumber(String panNo)throws IdCardException {
 
-//		IdCard idcard = idCardRepo.getIdCardByPanno(panNo);
-//		
-//		if(idcard != null) {
-//		     return idcard;
-//		}else
-//			throw new IdCardException("Invalid PanNo...");
+
 		
 		PanCard panCard = new PanCard(panNo);
 		
@@ -43,12 +38,6 @@ public class IdCardServiceImpl implements IdCardService {
 	@Override
 	public List<IdCard> getAdharCardByNo(Long adharNo)throws IdCardException {
 
-//		IdCard idcard = idCardRepo.getIdCardByAadharNo(adharNo);
-//		
-//		if(idcard != null) {
-//		     return idcard;
-//		}else
-//			throw new IdCardException("Invalid adharNo...");
 		
 		AdharCard adharCard = new AdharCard(adharNo);
 		
@@ -69,24 +58,24 @@ public class IdCardServiceImpl implements IdCardService {
 		// checking IdCard based on AdharCard
 		List< IdCard > id1 = idCardRepo.findByAdharcard( id.getAdharcard() );
 		
-		if(id1.isEmpty() ) {
+
+		if(id1 == null || id1.isEmpty() ) {
 			
 			// checking IdCard based on Pancard
 			IdCard id2 = idCardRepo.findByPancard(id.getPancard());
 			
+
 			if( id2 == null )return idCardRepo.save(id);
+
 				
 			
 			
 		}
+
 		
 		
 		throw new IdCardException("IdCard already registered with id : " + id.getId());
-			
 		
-		
-		
-//		return idCardRepo.save(id);
          
 	}
 

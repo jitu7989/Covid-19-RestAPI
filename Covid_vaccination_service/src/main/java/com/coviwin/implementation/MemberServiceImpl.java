@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.coviwin.exception.MemberException;
 import com.coviwin.model.AdharCard;
+
 import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.PanCard;
 import com.coviwin.model.VaccineRegistration;
+
+
 import com.coviwin.repo.MemberRepo;
 import com.coviwin.service.MemberService;
 
@@ -76,13 +79,6 @@ public class MemberServiceImpl  implements MemberService {
 
 	@Override
 	public Member addMember(Member member) throws MemberException {
-//		
-//		Member mem = memRepo.save(member);
-//		if(mem==null)
-//			throw new MemberException("Unable to save this member");
-//		return mem;
-		
-//		memRepo.findById(member.getMemberId()).orElseThrow(() -> new MemberException("Member is already registered with memberId : " + member.getMemberId()));
 		
 		if(member.getMemberId() != null) {
 			
@@ -115,7 +111,7 @@ public class MemberServiceImpl  implements MemberService {
 			
 		}else
 			throw new MemberException("id can;t be null..");
-		
+
 	}
 
 	@Override
@@ -137,6 +133,7 @@ public class MemberServiceImpl  implements MemberService {
 		vaccineRegistration.getMembers().add(member);  // associating vaccineRegistration with member 
 	   
 		return memRepo.save(member);
+
 	}
 
 	@Override

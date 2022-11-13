@@ -1,12 +1,13 @@
 package com.coviwin.implementation;
 
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.coviwin.exception.MemberException;
 import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.model.Appointment;
@@ -43,30 +44,28 @@ public class VaccinationCenterServiceImpl  implements VaccinationCenterService{
 
 	@Override
 	public VaccinationCenter addVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {		
-		
 	
 		if(center.getCode() != null) {
-		Optional<VaccinationCenter> opt = vcrepo.findById(center.getCode());
+        Optional<VaccinationCenter> opt = vcrepo.findById(center.getCode());
 
-		if(opt.isPresent()) {
-		  throw new VaccinationCenterException("VaccinationCenterException is already registered with VaccinationCenterExceptionId : " + center.getCode());
+        if(opt.isPresent()) {
+            throw new VaccinationCenterException("VaccinationCenterException is already registered with VaccinationCenterExceptionId : " + center.getCode());
+        }
 		}
 		
-		}
+    List<Appointment> appList = center.getAppointments();
 		
-        List<Appointment> appList = center.getAppointments();
+    if(appList != null) {
+        for(Appointment app : appList) {
+
+          app.setVaccinationCenter(center); // associating each appointment with VaccinationCenter 
+        }
 		
-        if(appList != null) {
-		for(Appointment app : appList) {
-			
-			app.setVaccinationCenter(center); // associating each appointment with VaccinationCenter 
-		}
-		
-        }else {
+    }else {
         	
         	appList = new ArrayList<>();
         	
-        }
+    }
         
         
 		
@@ -78,16 +77,12 @@ public class VaccinationCenterServiceImpl  implements VaccinationCenterService{
 		
 		return vcrepo.save(center);
 		
-//		VaccinationCenter vc = vcrepo.save(center);
-//		
-//		if(vc==null)
-//			throw new VaccinationCenterException("Unable to save");
-//		
-//		return vc;
+
 	}
 
 	@Override
 	public VaccinationCenter updateVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {
+
 		
 
 		Optional<VaccinationCenter> op = vcrepo.findById(center.getCode());
@@ -105,6 +100,7 @@ public class VaccinationCenterServiceImpl  implements VaccinationCenterService{
 			center.getVaccineInventory().getVaccinationCenters().add(center); // associating VaccineInventory with VaccinationCenter 
 	    	
 	    	return vcrepo.save(center);
+
 	    }	
 	    
 	    throw new VaccinationCenterException("No center found to update");

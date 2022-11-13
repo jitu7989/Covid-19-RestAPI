@@ -24,7 +24,9 @@ public class VaccineCount {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer vaccineCountId;
 	
+
 	private Integer vaccineId;
+
 
 	private Integer quantity;
 	

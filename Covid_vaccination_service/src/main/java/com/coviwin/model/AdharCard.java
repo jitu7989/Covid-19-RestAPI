@@ -18,6 +18,6 @@ public class AdharCard {
 //	@Pattern(regexp = "^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$", message = "Adhar card Number is Invalid!")
 	
 	@Digits(integer = 12,fraction = 12,message = "Length must be 12")
-	private long adharNo;
+	private Long adharNo;
 
 }
