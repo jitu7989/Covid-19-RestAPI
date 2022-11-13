@@ -17,7 +17,7 @@ import com.coviwin.service.AdminService;
 
 
 @RestController
-public class AdminController {
+public class AdminRestController {
 	@Autowired
 	private AdminService cService;
 	

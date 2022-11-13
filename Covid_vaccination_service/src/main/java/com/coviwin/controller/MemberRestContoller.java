@@ -16,7 +16,7 @@ import com.coviwin.service.UserService;
 
 
 @RestController
-public class UserContoller {
+public class MemberRestContoller {
 	
 	@Autowired
 	private UserService userser;
