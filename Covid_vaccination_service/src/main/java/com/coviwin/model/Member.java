@@ -42,6 +42,7 @@ public class Member {
 	@OneToOne(cascade = CascadeType.ALL)
 	private IdCard idCard;
 
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Vaccine vaccine;
 

@@ -26,7 +26,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class VaccinationCenter {
 
 	@Id

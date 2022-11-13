@@ -1,5 +1,6 @@
 package com.coviwin.implementation;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.coviwin.exception.MemberException;
 import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.model.Appointment;
 import com.coviwin.model.VaccinationCenter;
@@ -43,30 +44,63 @@ public class VaccinationCenterServiceImpl  implements VaccinationCenterService{
 
 	@Override
 	public VaccinationCenter addVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {		
+	
+		if(center.getCode() != null) {
+        Optional<VaccinationCenter> opt = vcrepo.findById(center.getCode());
+
+        if(opt.isPresent()) {
+            throw new VaccinationCenterException("VaccinationCenterException is already registered with VaccinationCenterExceptionId : " + center.getCode());
+        }
+		}
 		
+    List<Appointment> appList = center.getAppointments();
 		
-		VaccinationCenter vc = vcrepo.save(center);
+    if(appList != null) {
+        for(Appointment app : appList) {
+
+          app.setVaccinationCenter(center); // associating each appointment with VaccinationCenter 
+        }
 		
-		if(vc==null)
-			throw new VaccinationCenterException("Unable to save");
+    }else {
+        	
+        	appList = new ArrayList<>();
+        	
+    }
+        
+        
 		
-		return vc;
+	
+		VaccineInventory vaccineInventory = center.getVaccineInventory();
+		
+		if(vaccineInventory != null) 
+			vaccineInventory.getVaccinationCenters().add(center); // associating VaccineInventory with VaccinationCenter 
+		
+		return vcrepo.save(center);
+		
+
 	}
 
 	@Override
 	public VaccinationCenter updateVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {
+
+		
+
 		Optional<VaccinationCenter> op = vcrepo.findById(center.getCode());
+		
 	    if(op.isPresent())
 	    {
-	    	VaccinationCenter oldvc = op.get();
-	    	oldvc.setAddress(center.getAddress());
-	    	oldvc.setAppointments(center.getAppointments());
-	    	oldvc.setCentername(center.getCentername());
-	    	oldvc.setCity(center.getCity());
-	    	oldvc.setPincode(center.getPincode());
-	    	oldvc.setState(center.getState());
-	    	oldvc.setVaccineInventory(center.getVaccineInventory());
-	      return oldvc;
+	    	
+	    	List<Appointment> appList = center.getAppointments();
+			
+			for(Appointment app : appList) {
+				
+				app.setVaccinationCenter(center); // associating each appointment with VaccinationCenter 
+			}
+			
+			center.getVaccineInventory().getVaccinationCenters().add(center); // associating VaccineInventory with VaccinationCenter 
+	    	
+	    	return vcrepo.save(center);
+
 	    }	
 	    
 	    throw new VaccinationCenterException("No center found to update");

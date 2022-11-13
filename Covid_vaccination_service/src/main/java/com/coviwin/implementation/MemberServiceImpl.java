@@ -1,15 +1,21 @@
 package com.coviwin.implementation;
 
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coviwin.exception.MemberException;
 import com.coviwin.model.AdharCard;
+
+import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.PanCard;
+import com.coviwin.model.VaccineRegistration;
+
+
 import com.coviwin.repo.MemberRepo;
 import com.coviwin.service.MemberService;
 
@@ -73,28 +79,61 @@ public class MemberServiceImpl  implements MemberService {
 
 	@Override
 	public Member addMember(Member member) throws MemberException {
-		Member mem = memRepo.save(member);
-		if(mem==null)
-			throw new MemberException("Unable to save this member");
-		return mem;
+		
+		if(member.getMemberId() != null) {
+			
+		Optional<Member> opt = memRepo.findById(member.getMemberId());
+		
+			if(opt.isPresent()) {
+				throw new MemberException("Member is already registered with memberId : " + member.getMemberId());
+			}
+			
+			
+			List<Appointment> appList = member.getAppointments();
+			
+				if(appList != null) {
+				for(Appointment app : appList) {
+					
+					app.setMember(member); // associating each appointment with member 
+				}
+				
+				}else {
+					appList = new ArrayList<>();
+				}
+				
+			
+			VaccineRegistration vaccineRegistration =member.getVaccineRegistration();
+			
+			if(vaccineRegistration.getMembers() != null)
+			vaccineRegistration.getMembers().add(member);  // associating vaccineRegistration with member 
+			
+			return memRepo.save(member);
+			
+		}else
+			throw new MemberException("id can;t be null..");
+
 	}
 
 	@Override
 	public Member updateMember(Member member) throws MemberException {
+		
 		Optional<Member> op = memRepo.findById(member.getMemberId());
+		
 		if(op.isEmpty())
 			throw new MemberException("Member not found");
+	
+        List<Appointment> appList = member.getAppointments();
 		
-	   Member oldMem = op.get();
-	   oldMem.setAppointments(member.getAppointments());
-	   oldMem.setDose1Date(member.getDose1Date());
-	   oldMem.setDose1Status(member.isDose1Status());
-	   oldMem.setDose2Date(member.getDose2Date());
-	   oldMem.setDose2Status(member.isDose2Status());
-	   oldMem.setVaccine(member.getVaccine());
-	   oldMem.setVaccineRegistration(member.getVaccineRegistration());
+		for(Appointment app : appList) {
+			
+			app.setMember(member); // associating each appointment with member 
+		}
+		
+		VaccineRegistration vaccineRegistration =member.getVaccineRegistration();
+		vaccineRegistration.getMembers().add(member);  // associating vaccineRegistration with member 
 	   
-		return oldMem;
+		return memRepo.save(member);
+
 	}
 
 	@Override

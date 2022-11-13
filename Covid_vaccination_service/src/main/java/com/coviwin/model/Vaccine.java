@@ -41,46 +41,6 @@ public class Vaccine {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccine")
 	private List<Member> member;
 
-	public Integer getVaccineid() {
-		return vaccineid;
-	}
-
-	public void setVaccineid(Integer vaccineid) {
-		this.vaccineid = vaccineid;
-	}
-
-	public String getVaccineName() {
-		return vaccineName;
-	}
-
-	public void setVaccineName(String vaccineName) {
-		this.vaccineName = vaccineName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public VaccineCount getVaccinecount() {
-		return vaccinecount;
-	}
-
-	public void setVaccinecount(VaccineCount vaccinecount) {
-		this.vaccinecount = vaccinecount;
-	}
-
-	public List<Member> getMember() {
-		return member;
-	}
-
-	public void setMember(List<Member> member) {
-		this.member = member;
-	}
-
 	
 	
 }

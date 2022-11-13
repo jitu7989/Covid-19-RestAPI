@@ -25,7 +25,11 @@ public class VaccineCount {
 	private Integer vaccineCountId;
 	
 
+	private Integer vaccineId;
+
+
 	private Integer quantity;
+	
 	private Double price;
 
 	@OneToOne(cascade = CascadeType.ALL)

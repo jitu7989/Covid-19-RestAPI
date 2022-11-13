@@ -1,5 +1,8 @@
 package com.coviwin.implementation;
 
+
+import java.lang.reflect.Member;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +43,7 @@ public class VaccineServiceImpl implements VaccineService {
 
 	@Override
 	public Vaccine getVaccineById(Integer vaccineId) throws VaccineException {
+
 		Optional<Vaccine> op = vaccineRepo.findById(vaccineId);
 		if(op.isPresent())
 			return op.get();
@@ -49,26 +53,58 @@ public class VaccineServiceImpl implements VaccineService {
 	@Override
 	public Vaccine addVaccine(Vaccine vaccine) throws VaccineException {
 		
-		Vaccine vac = vaccineRepo.save(vaccine);
-		if(vac==null)
-			 throw new VaccineException("Unable to save ");
-		return vac;
+
+		if(vaccine.getVaccineid() != null) {
+			
+		Optional<Vaccine> op = vaccineRepo.findById(vaccine.getVaccineid());
+		
+		if(op.isPresent()) {
+			throw new VaccineException("vaccine already registered with vaccineId : " + vaccine.getVaccineid());
+		}
+
+		List<com.coviwin.model.Member> memList = vaccine.getMember();
+		
+		if(memList != null) {
+		
+		 for(com.coviwin.model.Member mem : memList) {
+			 
+			 mem.setVaccine(vaccine); // associating each member with vaccine
+			 
+		 }
+		}
+		 
+		 if(vaccine.getVaccinecount() != null)
+		 vaccine.getVaccinecount().setVaccine(vaccine);   // associating VaccineCount with vaccine
+		 
+		
+		return vaccineRepo.save(vaccine);
+
+		}else
+			throw new VaccineException("id can't be null");
+		
+
 	}
 
 	@Override
 	public Vaccine updateVaccine(Vaccine vaccine) throws VaccineException {
-		Optional<Vaccine> op = vaccineRepo.findById(vaccine.getVaccineid());
-		if(op.isPresent())
-		{
-			Vaccine vac = op.get();
-			vac.setDescription(vaccine.getDescription());
-			vac.setMember(vaccine.getMember());
-			vac.setVaccinecount(vaccine.getVaccinecount());
-			vac.setVaccineName(vaccine.getVaccineName());
-			
-			return vac;
-		}
-		throw new VaccineException("Unable to update");
+		
+		vaccineRepo.findById(vaccine.getVaccineid()).orElseThrow(() -> new VaccineException("Vaccine not found with VaccineId : " + vaccine.getVaccineid()));
+		
+	 List<com.coviwin.model.Member> memList = vaccine.getMember();
+	
+	 for(com.coviwin.model.Member mem : memList) {
+		 
+		 mem.setVaccine(vaccine); // associating each member with vaccine
+		 
+	 }
+	 
+	 vaccine.getVaccinecount().setVaccine(vaccine);   // associating VaccineCount with vaccine
+	 
+		return vaccineRepo.save(vaccine);
+
+		
+		
+
 	}
 
 	@Override

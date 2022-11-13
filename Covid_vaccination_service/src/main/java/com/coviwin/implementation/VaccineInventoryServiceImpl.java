@@ -41,6 +41,7 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 	@Override
 	public VaccineInventory addVaccineCount(VaccineInventory vacInv, VaccineCount vacineCount)throws VaccineInventoryException {
 
+		
 		VaccineInventory vaccineInventory = vacInvRepo.findById(vacInv.getVaccineInventoryId())
 				                            .orElseThrow(() -> new VaccineInventoryException("No VaccineInventory found with details : "+ vacInv));
 		
@@ -57,9 +58,15 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 	public VaccineInventory addVaccineInventoryByCenter(Integer centerId, VaccineInventory vInventory)
 			throws VaccineInventoryException {
 		
-		VaccinationCenter vaccinationCenter = vacCenterRepo
-											  .findById(centerId)
-				                              .orElseThrow(() -> new VaccineInventoryException("No VaccinationCenter found with centerId : "+ centerId)) ;
+
+		
+		VaccinationCenter vaccinationCenter = vacCenterRepo.findById(centerId)
+                .orElseThrow(() -> new VaccineInventoryException("No VaccinationCenter found with centerId : "+ centerId)) ;
+		
+		if(vInventory.getVaccineInventoryId() != null) {
+		
+		
+
 	
 		
 	    vaccinationCenter.setVaccineInventory( vInventory ); // associating vaccinationCenter with VaccineInventory
@@ -77,6 +84,17 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 	    vInventory.getVaccinationCenters().add(vaccinationCenter);
 	    
 	    return vacInvRepo.save(vInventory);
+	    
+	    
+		}else {
+			
+			 vaccinationCenter.setVaccineInventory(vInventory);
+			 
+			 vacCenterRepo.save(vaccinationCenter);
+			
+			return vaccinationCenter.getVaccineInventory();
+		}
+			
 	
 	}
 
