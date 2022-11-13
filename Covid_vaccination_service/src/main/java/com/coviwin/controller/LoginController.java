@@ -24,7 +24,7 @@ public class LoginController {
 	private UserLoginService userLogInService;
 	
 	@PostMapping("/adminlogin")
-	public ResponseEntity<String> logInCustomer(@RequestBody LoginDTO dto) throws LoginException{
+	public ResponseEntity<String> logInAdmin(@RequestBody LoginDTO dto) throws LoginException{
 		
 	   String result=	lservice.loginAccount(dto);
 	   
@@ -32,20 +32,20 @@ public class LoginController {
 	}
 	
 	@PostMapping("/adminlogout")
-	public String logOutCustomer(@RequestParam(required  = false) String key) throws LoginException{
+	public String logOutAdmin(@RequestParam(required  = false) String key) throws LoginException{
 		return lservice.logoutAccount(key);
 	}
 	
 	// for user login
 	@PostMapping("/userlogin")
-	public ResponseEntity<String>  logInUser(@RequestBody UserDTO userDTO) throws LoginException {
+	public ResponseEntity<String>  logInMember(@RequestBody UserDTO userDTO) throws LoginException {
 		String result= userLogInService.logIntoAccount(userDTO);
 		return new ResponseEntity<String>(result,HttpStatus.OK);
 	}
 
 	// for user logout
 	@PostMapping("/userlogout")
-	public String logOutUser(@RequestParam(required = false) String key) throws LoginException {
+	public String logOutMember(@RequestParam(required = false) String key) throws LoginException {
 		return userLogInService.logOutAccount(key);
 	}
 	

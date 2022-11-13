@@ -85,15 +85,15 @@ public class AdminRestController {
 	}
 	
 	@PostMapping("/admins")
-	public ResponseEntity<Admin> saveCustomer(@RequestParam String key, @RequestBody Admin customer) throws AdminException, LoginException{
-			adminLoginService.authenthicate(key);
+	public ResponseEntity<Admin> saveAdmin(@RequestBody Admin customer) throws AdminException, LoginException{
+			
 		Admin savedCustomer=  cService.registerCustomer(customer);
 		
 		return new  ResponseEntity<Admin>(savedCustomer,HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/admins")
-	public ResponseEntity<Admin> updateCustomer(@RequestParam String key, @RequestBody Admin customer) throws AdminException ,LoginException{
+	public ResponseEntity<Admin> updateAdmin(@RequestParam String key, @RequestBody Admin customer) throws AdminException ,LoginException{
 	 	adminLoginService.authenthicate(key);
 	 Admin updateCustomer=	cService.updateCustomer(customer, key);
 	 return new ResponseEntity<Admin>(updateCustomer,HttpStatus.OK);
