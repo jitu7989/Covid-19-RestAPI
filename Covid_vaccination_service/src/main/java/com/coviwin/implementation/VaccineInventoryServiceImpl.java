@@ -57,10 +57,14 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 	public VaccineInventory addVaccineInventoryByCenter(Integer centerId, VaccineInventory vInventory)
 			throws VaccineInventoryException {
 		
-		VaccinationCenter vaccinationCenter = vacCenterRepo.findById(centerId)
+		VaccinationCenter vaccinationCenter = vacCenterRepo
+											  .findById(centerId)
 				                              .orElseThrow(() -> new VaccineInventoryException("No VaccinationCenter found with centerId : "+ centerId)) ;
 	
-	    vaccinationCenter.setVaccineInventory(vInventory); // associating vaccinationCenter with VaccineInventory
+		
+	    vaccinationCenter.setVaccineInventory( vInventory ); // associating vaccinationCenter with VaccineInventory
+	    
+	    
 	    
 	    List<VaccineCount> VacCountList = vInventory.getVaccineCounts();
 	    
