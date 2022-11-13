@@ -69,20 +69,24 @@ public class IdCardServiceImpl implements IdCardService {
 		// checking IdCard based on AdharCard
 		List< IdCard > id1 = idCardRepo.findByAdharcard( id.getAdharcard() );
 		
-		if(id1 == null || id1.isEmpty() ) {
+		if(id1.isEmpty() ) {
 			
 			// checking IdCard based on Pancard
 			IdCard id2 = idCardRepo.findByPancard(id.getPancard());
 			
-			if( id2 == null )  return idCardRepo.save(id);
+			if( id2 == null )return idCardRepo.save(id);
 				
 			
 			
 		}
-			
+		
+		
 		throw new IdCardException("IdCard already registered with id : " + id.getId());
+			
 		
 		
+		
+//		return idCardRepo.save(id);
          
 	}
 

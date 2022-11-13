@@ -51,6 +51,8 @@ public class VaccineServiceImpl implements VaccineService {
 	@Override
 	public Vaccine addVaccine(Vaccine vaccine) throws VaccineException {
 		
+		if(vaccine.getVaccineid() != null) {
+			
 		Optional<Vaccine> op = vaccineRepo.findById(vaccine.getVaccineid());
 		
 		if(op.isPresent()) {
@@ -59,17 +61,23 @@ public class VaccineServiceImpl implements VaccineService {
 
 		List<com.coviwin.model.Member> memList = vaccine.getMember();
 		
+		if(memList != null) {
+		
 		 for(com.coviwin.model.Member mem : memList) {
 			 
 			 mem.setVaccine(vaccine); // associating each member with vaccine
 			 
 		 }
+		}
 		 
+		 if(vaccine.getVaccinecount() != null)
 		 vaccine.getVaccinecount().setVaccine(vaccine);   // associating VaccineCount with vaccine
 		 
 		
 		return vaccineRepo.save(vaccine);
 
+		}else
+			throw new VaccineException("id can't be null");
 		
 //		Vaccine vac = vaccineRepo.save(vaccine);
 //		if(vac==null)

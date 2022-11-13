@@ -38,7 +38,7 @@ public class VaccineRegistration {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate dateofregistration;
 
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccineRegistration")
 	private List<Member> members;
 }

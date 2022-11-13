@@ -1,6 +1,7 @@
 package com.coviwin.implementation;
 
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,19 +82,40 @@ public class MemberServiceImpl  implements MemberService {
 //			throw new MemberException("Unable to save this member");
 //		return mem;
 		
-		memRepo.findById(member.getMemberId()).orElseThrow(() -> new MemberException("Member is already registered with memberId : " + member.getMemberId()));
+//		memRepo.findById(member.getMemberId()).orElseThrow(() -> new MemberException("Member is already registered with memberId : " + member.getMemberId()));
 		
-		List<Appointment> appList = member.getAppointments();
-		
-		for(Appointment app : appList) {
+		if(member.getMemberId() != null) {
 			
-			app.setMember(member); // associating each appointment with member 
-		}
+		Optional<Member> opt = memRepo.findById(member.getMemberId());
 		
-		VaccineRegistration vaccineRegistration =member.getVaccineRegistration();
-		vaccineRegistration.getMembers().add(member);  // associating vaccineRegistration with member 
+			if(opt.isPresent()) {
+				throw new MemberException("Member is already registered with memberId : " + member.getMemberId());
+			}
+			
+			
+			List<Appointment> appList = member.getAppointments();
+			
+				if(appList != null) {
+				for(Appointment app : appList) {
+					
+					app.setMember(member); // associating each appointment with member 
+				}
+				
+				}else {
+					appList = new ArrayList<>();
+				}
+				
+			
+			VaccineRegistration vaccineRegistration =member.getVaccineRegistration();
+			
+			if(vaccineRegistration.getMembers() != null)
+			vaccineRegistration.getMembers().add(member);  // associating vaccineRegistration with member 
+			
+			return memRepo.save(member);
+			
+		}else
+			throw new MemberException("id can;t be null..");
 		
-		return memRepo.save(member);
 	}
 
 	@Override

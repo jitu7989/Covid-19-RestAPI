@@ -33,11 +33,11 @@ public class Vaccine {
 	private String vaccineName;
 	private String description;
 
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "vaccine")
 	private VaccineCount vaccinecount;
 
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccine")
 	private List<Member> member;
 

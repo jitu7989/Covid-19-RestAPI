@@ -56,7 +56,7 @@ public class IdCard {
 	@Size(min = 6, max = 8)
 	private String pincode;
 
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "idCard")
 	private Member member;
 

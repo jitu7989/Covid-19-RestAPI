@@ -46,7 +46,7 @@ public class Appointment {
 
 	Slot slot;
 
-//	@JsonIgnore
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	Member member;
 

@@ -43,23 +43,37 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public Appointment addAppointment(Appointment app) throws ApppintmentException {
 		
+		if(app.getBookingID() != null) {
+			
 		Optional<Appointment> opt = appRepo.findById(app.getBookingID());
 		
-		if(opt.isPresent()) {
-			throw new ApppintmentException("Appointment is already present with bookingId : " + app.getBookingID());
+			
+			if(opt.isPresent()) {
+				
+				throw new ApppintmentException("Appointment is already present with bookingId : " + app.getBookingID());
+				
+			}
+				
+				Member member = app.getMember();
+				
+				member.getAppointments().add(app); // associating member with appointment
+				
+				VaccinationCenter vacCenter = app.getVaccinationCenter();
+				
+				vacCenter.getAppointments().add(app); // associating VaccinationCenter with appointment
+				
+				
+				return appRepo.save(app);
+				
+			}else
+				throw new ApppintmentException("ID value can't be null././");
+			
+		
+		
 		}
 		
-		Member member = app.getMember();
 		
-		member.getAppointments().add(app); // associating member with appointment
-		
-	    VaccinationCenter vacCenter = app.getVaccinationCenter();
-	    
-	    vacCenter.getAppointments().add(app); // associating VaccinationCenter with appointment
-	    
-		
-		return appRepo.save(app);
-	}
+	
 
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.coviwin.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,16 +44,37 @@ public class VaccinationCenterServiceImpl  implements VaccinationCenterService{
 	@Override
 	public VaccinationCenter addVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {		
 		
-		vcrepo.findById(center.getCode()).orElseThrow(() -> new VaccinationCenterException("VaccinationCenterException is already registered with VaccinationCenterExceptionId : " + center.getCode()));
+	
+		if(center.getCode() != null) {
+		Optional<VaccinationCenter> opt = vcrepo.findById(center.getCode());
 
+		if(opt.isPresent()) {
+		  throw new VaccinationCenterException("VaccinationCenterException is already registered with VaccinationCenterExceptionId : " + center.getCode());
+		}
+		
+		}
+		
         List<Appointment> appList = center.getAppointments();
 		
+        if(appList != null) {
 		for(Appointment app : appList) {
 			
 			app.setVaccinationCenter(center); // associating each appointment with VaccinationCenter 
 		}
 		
-		center.getVaccineInventory().getVaccinationCenters().add(center); // associating VaccineInventory with VaccinationCenter 
+        }else {
+        	
+        	appList = new ArrayList<>();
+        	
+        }
+        
+        
+		
+	
+		VaccineInventory vaccineInventory = center.getVaccineInventory();
+		
+		if(vaccineInventory != null) 
+			vaccineInventory.getVaccinationCenters().add(center); // associating VaccineInventory with VaccinationCenter 
 		
 		return vcrepo.save(center);
 		
@@ -67,6 +89,7 @@ public class VaccinationCenterServiceImpl  implements VaccinationCenterService{
 	@Override
 	public VaccinationCenter updateVaccineCenter(VaccinationCenter center) throws VaccinationCenterException {
 		
+
 		Optional<VaccinationCenter> op = vcrepo.findById(center.getCode());
 		
 	    if(op.isPresent())
