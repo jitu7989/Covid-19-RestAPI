@@ -175,6 +175,6 @@
 
 ---
 
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/Thank-you-word-cloud.jpg?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+<img src="" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
 
 ---
