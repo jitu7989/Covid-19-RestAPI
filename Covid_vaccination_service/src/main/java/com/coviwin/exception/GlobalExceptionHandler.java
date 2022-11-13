@@ -92,5 +92,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorDetail>( ed , HttpStatus.BAD_REQUEST );
 	}
 	
+	@ExceptionHandler(LoginException.class)
+	public ResponseEntity<ErrorDetail> LoginException(  LoginException vre , WebRequest wr ){
+		
+		ErrorDetail ed = new ErrorDetail( vre.getMessage() , wr.getDescription(false) );
+		
+		return new ResponseEntity<ErrorDetail>( ed , HttpStatus.BAD_REQUEST );
+	}
 	
 }

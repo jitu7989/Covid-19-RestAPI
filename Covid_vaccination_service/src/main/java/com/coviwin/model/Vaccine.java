@@ -40,6 +40,5 @@ public class Vaccine {
 //	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccine")
 	private List<Member> member;
-
 	
 }

@@ -23,15 +23,18 @@ public class VaccineCount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer vaccineCountId;
-	private Integer vaccineId;
+
 
 	private Integer quantity;
+	
 	private Double price;
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Vaccine vaccine;
 
 //	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private VaccineInventory vaccineInventory;
+	
 }

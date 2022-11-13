@@ -29,7 +29,16 @@ public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer memberId;
+	
+	private boolean dose1Status;
+	private boolean dose2Status;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	private LocalDate dose1Date;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	private LocalDate dose2Date;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	private IdCard idCard;
 
@@ -42,13 +51,6 @@ public class Member {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "member", fetch = FetchType.EAGER)
 	private List<Appointment> appointments = new ArrayList<Appointment>();
 
-	private boolean dose1Status;
-	private boolean dose2Status;
-
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	private LocalDate dose1Date;
-
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	private LocalDate dose2Date;
+	
 
 }
