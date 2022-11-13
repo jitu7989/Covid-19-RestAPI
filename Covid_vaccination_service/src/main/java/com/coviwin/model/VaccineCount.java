@@ -31,7 +31,7 @@ public class VaccineCount {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Vaccine vaccine;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private VaccineInventory vaccineInventory;
 }
