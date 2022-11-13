@@ -131,7 +131,7 @@
  
 ### E-R Diagram Of Covid-19 Application
 ---
-<img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/Er-Diagram.jpeg?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
+<img src="https://github.com/jitu7989/tall-yak-6508/blob/main/Covid_vaccination_service/src/main/resources/static/ER_diagram.png?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
 
 ---
 
