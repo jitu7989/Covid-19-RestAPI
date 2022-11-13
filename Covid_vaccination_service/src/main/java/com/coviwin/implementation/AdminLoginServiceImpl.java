@@ -64,7 +64,7 @@ public class AdminLoginServiceImpl implements AdminLoginService{
 		
 		CurrentAdminSession cdSession = currentdao.findByUuid(key);
 		
-		if(cdSession==null) throw new LoginException("Login in and retry");
+		if(cdSession==null) throw new LoginException("Admin not active");
 		
 		return true;
 	}

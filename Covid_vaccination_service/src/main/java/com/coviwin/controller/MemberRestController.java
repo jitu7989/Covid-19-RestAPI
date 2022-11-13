@@ -72,7 +72,7 @@ public class MemberRestController {
 	private UserLoginService userLoginService;
 	
 	@PostMapping("/users")
-	public ResponseEntity<User>  saveUser(@RequestParam String key , @RequestBody User user) throws UserException, LoginException {
+	public ResponseEntity<User>  saveMember(@RequestParam String key , @RequestBody User user) throws UserException, LoginException {
 		userLoginService.authenthicate(key);
 		User savedUser=  userser.registerUser(user);
 		return new ResponseEntity<User>(savedUser,HttpStatus.CREATED);
@@ -80,7 +80,7 @@ public class MemberRestController {
 
 	// to update user by passing key
 	@PutMapping("/update")
-	public ResponseEntity<User> updateUser(@RequestBody User user, @RequestParam(required = false) String key) throws UserException, LoginException {
+	public ResponseEntity<User> updateMember(@RequestBody User user, @RequestParam(required = false) String key) throws UserException, LoginException {
 		 userLoginService.authenthicate(key);
 		 User update=userser.updateUser(user, key);
 		 return new ResponseEntity<User>(update,HttpStatus.OK);
