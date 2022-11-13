@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineInventoryException;
-import com.coviwin.model.VaccinationCenter;
 import com.coviwin.model.Vaccine;
 import com.coviwin.model.VaccineCount;
 import com.coviwin.model.VaccineInventory;

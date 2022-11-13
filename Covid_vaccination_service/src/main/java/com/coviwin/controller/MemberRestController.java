@@ -18,18 +18,21 @@ import javax.validation.Valid;
 import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
 import com.coviwin.exception.MemberException;
+import com.coviwin.exception.UserException;
 import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineRegistrationException;
 import com.coviwin.model.Appointment;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
+import com.coviwin.model.User;
 import com.coviwin.model.VaccinationCenter;
 import com.coviwin.model.Vaccine;
 import com.coviwin.model.VaccineRegistration;
 import com.coviwin.service.AppointmentService;
 import com.coviwin.service.IdCardService;
 import com.coviwin.service.MemberService;
+import com.coviwin.service.UserService;
 import com.coviwin.service.VaccinationCenterService;
 import com.coviwin.service.VaccineRegistrationService;
 import com.coviwin.service.VaccineService;
@@ -57,7 +60,25 @@ public class MemberRestController {
 	
 	@Autowired
 	private VaccineService vaccinser;
-	 
+	
+	@Autowired
+	private UserService userser;
+	
+	@PostMapping("/users")
+	public ResponseEntity<User>  saveUser(@RequestBody User user) throws UserException {
+		User savedUser=  userser.registerUser(user);
+		return new ResponseEntity<User>(savedUser,HttpStatus.CREATED);
+	}
+
+	// to update user by passing key
+	@PutMapping("/update")
+	public ResponseEntity<User> updateUser(@RequestBody User user, @RequestParam(required = false) String key) throws UserException {
+	 User update=userser.updateUser(user, key);
+	 return new ResponseEntity<User>(update,HttpStatus.OK);
+
+		
+	}
+	
 	// idcard
 	@PostMapping("/idCard")
 	public ResponseEntity<IdCard> addidCardHandler(@Valid @RequestBody IdCard card) throws IdCardException{

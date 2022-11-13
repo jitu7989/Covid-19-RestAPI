@@ -1,5 +1,6 @@
 package com.coviwin.controller;
 
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.coviwin.exception.AdminException;
+import com.coviwin.model.Admin;
+import com.coviwin.service.AdminService;
 import com.coviwin.exception.ApppintmentException;
 import com.coviwin.exception.IdCardException;
 import com.coviwin.exception.MemberException;
@@ -25,7 +29,6 @@ import com.coviwin.exception.VaccinationCenterException;
 import com.coviwin.exception.VaccineException;
 import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.Appointment;
-//import com.coviwin.exception.VaccineInventoryException;
 import com.coviwin.model.IdCard;
 import com.coviwin.model.Member;
 import com.coviwin.model.VaccinationCenter;
@@ -60,6 +63,9 @@ public class AdminRestController {
 	
 	@Autowired
 	public AppointmentService appointmentService;
+	
+	@Autowired
+	private AdminService cService;
 	
 //	Vaccination center Service method
 	
@@ -323,6 +329,21 @@ public class AdminRestController {
 		Appointment app = appointmentService.updateAppointment(appointment);
 		return new ResponseEntity< Appointment>(app,HttpStatus.ACCEPTED);
 	}
+	@PostMapping("/admins")
+	public ResponseEntity<Admin> saveCustomer(@RequestBody Admin customer) throws AdminException{
+		Admin savedCustomer=  cService.registerCustomer(customer);
+		
+		return new  ResponseEntity<Admin>(savedCustomer,HttpStatus.CREATED);
+	}
 	
-	
+	@PutMapping("/admins")
+	public ResponseEntity<Admin> updateCustomer(@RequestBody Admin customer,@RequestParam(required = false) String key) throws AdminException{
+	 Admin updateCustomer=	cService.updateCustomer(customer, key);
+	 return new ResponseEntity<Admin>(updateCustomer,HttpStatus.OK);
+	}
 }
+	
+
+
+
+
