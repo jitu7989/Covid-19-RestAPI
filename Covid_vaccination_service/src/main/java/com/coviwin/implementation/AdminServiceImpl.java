@@ -13,6 +13,7 @@ import com.coviwin.service.AdminService;
 
 @Service
 public class AdminServiceImpl implements AdminService{
+	
 	@Autowired
 	private AdminDao customerDao;
 	
@@ -21,9 +22,11 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public Admin registerCustomer(Admin customer) throws AdminException {
-		Admin existingCus=  customerDao.findByMobileNo(customer.getMobileNo());
+		
+		Admin existingCus =  customerDao.findByMobileNo(customer.getMobileNo());
+		
 		if(existingCus !=null) {
-			throw new AdminException("Customer already exist");
+			throw new AdminException("Admin already exist");
 		}
 		else {
 			

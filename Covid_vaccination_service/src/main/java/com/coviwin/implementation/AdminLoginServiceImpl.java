@@ -17,6 +17,7 @@ import com.coviwin.service.AdminLoginService;
 import net.bytebuddy.utility.RandomString;
 @Service
 public class AdminLoginServiceImpl implements AdminLoginService{
+	
 	@Autowired
 	private AdminDao customerdao;
 	
@@ -27,22 +28,29 @@ public class AdminLoginServiceImpl implements AdminLoginService{
 	
 	@Override
 	public String loginAccount(LoginDTO dto) throws LoginException {
+		
 		Admin existingCustomer = customerdao.findByMobileNo(dto.getMobileNo());
+		
 		if(existingCustomer==null) {
 			throw new LoginException("Please Enter valid mobile Number");
 		}
+		
 		Optional<CurrentAdminSession> validCustomerSession= currentdao.findById(existingCustomer.getCustomerId());
+		
 		if(validCustomerSession.isPresent()) {
 			throw new LoginException("User already logedin on this number ");
 		}
+		
+		
 		if(existingCustomer.getPassword().equals(dto.getPassword())) {
-			String key=RandomString.make(6); //make unique key
 			
-			//object bnaya currentUserSession ka aur usme customer ka id and key and localdatetime ko store kraya
+			String key = RandomString.make(6); //make unique key
+
 			CurrentAdminSession currentUserSession=new CurrentAdminSession(existingCustomer.getCustomerId(),key,LocalDateTime.now());
 			
 			currentdao.save(currentUserSession);
 			return currentUserSession.toString();
+			
 		}
 		else {
 			throw new LoginException("Please Enter a valid password");
@@ -59,6 +67,7 @@ public class AdminLoginServiceImpl implements AdminLoginService{
 		return "Logged Out";
 	}
 
+	
 	@Override
 	public Boolean authenthicate(String key) throws LoginException {
 		

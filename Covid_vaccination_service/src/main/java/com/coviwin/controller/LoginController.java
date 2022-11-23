@@ -26,7 +26,7 @@ public class LoginController {
 	@PostMapping("/adminlogin")
 	public ResponseEntity<String> logInAdmin(@RequestBody LoginDTO dto) throws LoginException{
 		
-	   String result=	lservice.loginAccount(dto);
+	   String result = lservice.loginAccount(dto);
 	   
 	   return new ResponseEntity<String>(result,HttpStatus.OK);
 	}

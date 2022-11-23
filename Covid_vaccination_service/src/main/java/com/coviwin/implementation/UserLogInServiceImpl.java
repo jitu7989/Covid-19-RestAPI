@@ -28,7 +28,8 @@ public class UserLogInServiceImpl implements UserLoginService{
 
 	@Override
 	public String logIntoAccount(UserDTO userDTO) throws LoginException {
-User opt= userDao.findByMobileNo(userDTO.getMobileNo());
+		
+        User opt= userDao.findByMobileNo(userDTO.getMobileNo());
 		
 		if(opt==null) {
 			throw new LoginException("Please Enter valid mobile Number");
