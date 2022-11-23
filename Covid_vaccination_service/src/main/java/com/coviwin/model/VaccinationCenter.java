@@ -53,12 +53,12 @@ public class VaccinationCenter {
 	@Size(min = 6, max = 8)
 	private String pincode;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vaccinationCenter")
 	private List<Appointment> appointments;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JsonIgnore
+//	@JsonIgnore
 	private VaccineInventory vaccineInventory;
 
 	
