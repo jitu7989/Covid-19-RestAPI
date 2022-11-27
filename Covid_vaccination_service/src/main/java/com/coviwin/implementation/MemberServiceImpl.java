@@ -93,6 +93,7 @@ public class MemberServiceImpl  implements MemberService {
 		VaccineRegistration vaccineRegistration = member.getVaccineRegistration();
 			
 		if(vaccineRegistration != null)
+			if(	vaccineRegistration.getMembers() != null)
 			vaccineRegistration.getMembers().add(member);  // associating vaccineRegistration with member 
 			
 		return memRepo.save(member);

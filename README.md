@@ -2,7 +2,7 @@
 # REST API for an Covid-19 Application
 
 * We have developed this REST API for an Covid-19 Application. This API performs all the fundamental CRUD operations of any Covid-19 Application platform with user validation at every step.
-* This project is developed by team of 6 Back-end Developers during project week in Masai School. 
+* This project is developed by team of 5 Back-end Developers during project week in Masai School. 
 
 ## Tech Stack
 
@@ -174,5 +174,4 @@
 <img src="https://github.com/shivamgarg796/Spring-work/blob/master/Images/mODELS.png?raw=true" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage">
 
 ---
-
 ---

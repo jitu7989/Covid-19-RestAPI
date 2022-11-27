@@ -13,13 +13,14 @@ import lombok.Data;
 @Entity
 @Data
 public class Admin {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer customerId;
 	
 	@NotNull(message = "Name is mandatory")
 	private String name;
-//	
+	
 	@Column(unique = true)
 	@Size(max = 10,min = 10)
 	@NotNull(message = "Mobile is mandatory")

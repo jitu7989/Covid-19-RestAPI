@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.RenderingHints.Key;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -72,8 +71,8 @@ public class MemberRestController {
 	private UserLoginService userLoginService;
 	
 	@PostMapping("/users")
-	public ResponseEntity<User>  saveMember(@RequestParam String key , @RequestBody User user) throws UserException, LoginException {
-		userLoginService.authenthicate(key);
+	public ResponseEntity<User>  saveMember( @RequestBody User user) throws UserException {
+	
 		User savedUser=  userser.registerUser(user);
 		return new ResponseEntity<User>(savedUser,HttpStatus.CREATED);
 	}
@@ -195,58 +194,18 @@ public class MemberRestController {
 		}
 		
 		
-		//vaccinCentral
-		// list pending
-		
+		//VaccinationCenter
+	
 		
 		@GetMapping("/vaccincenter")
-		public ResponseEntity<List<VaccinationCenter>> getAllVacciceInventory(@RequestParam String key ) throws VaccinationCenterException , LoginException{
+		public ResponseEntity<List<VaccinationCenter>> getAllVaccinationCenter(@RequestParam String key ) throws VaccinationCenterException , LoginException{
 			userLoginService.authenthicate(key);
 		    List<VaccinationCenter> vInventory =  vaccincenterSer.getAllVaccineCenters();
 			
 			return new ResponseEntity<List<VaccinationCenter>>( vInventory , HttpStatus.FOUND );
 		}
 		
-		
-		@PostMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> addVaccineCenterHandler(@RequestParam String key ,@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException , LoginException{
-			
-			userLoginService.authenthicate(key);
-			VaccinationCenter addVCenter=vaccincenterSer.addVaccineCenter(vaccincenter);
-			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.CREATED);
-					
-		}
-		
-		
-		@DeleteMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> deletevaccinCenterHandler(@RequestParam String key ,@Valid @RequestBody VaccinationCenter vaccincenter) throws VaccinationCenterException , LoginException{
-			userLoginService.authenthicate(key);
-			return new  ResponseEntity<VaccinationCenter>(vaccincenterSer.deleteVaccineCenter(vaccincenter), HttpStatus.OK);
-			
-		}
-		
-		@GetMapping("/vaccincenter/{centerid}")
-		public ResponseEntity<VaccinationCenter> getVaccineCenterHandler(@RequestParam String key ,@PathVariable("centerid") Integer centerid) throws VaccinationCenterException , LoginException{
-			
-			userLoginService.authenthicate(key);
-			VaccinationCenter getVCenter=vaccincenterSer.getVaccineCenters(centerid);
-			 return new ResponseEntity<VaccinationCenter>(getVCenter,HttpStatus.FOUND);
-					
-		}
-		
-		@PutMapping("/vaccincenter")
-		public ResponseEntity<VaccinationCenter> updateVaccineCenterHandler(@RequestParam String key ,@Valid @RequestBody  VaccinationCenter vaccincenter) throws VaccinationCenterException , LoginException{
-			
-			userLoginService.authenthicate(key);
-			VaccinationCenter addVCenter=vaccincenterSer.updateVaccineCenter(vaccincenter);
-			 return new ResponseEntity<VaccinationCenter>(addVCenter,HttpStatus.OK);
-					
-		}
-	
-		
-		// vaccinRegestration Serervice method
-		
-		// get vacin reg pending
+
 		
 		@DeleteMapping("/vaccineReg")
 		public ResponseEntity<Boolean> deleteVaccineReg(@RequestParam String key ,@Valid @RequestBody VaccineRegistration vaccinreg) throws VaccineRegistrationException, LoginException{
@@ -255,7 +214,7 @@ public class MemberRestController {
 			return new ResponseEntity<Boolean>(vaccinRegSer.deleteVaccineRegistration(vaccinreg),HttpStatus.OK);
 		}
 		
-		@GetMapping("/vaccineReg")
+		@PostMapping("/vaccineReg")
 		public ResponseEntity<VaccineRegistration> getVaccineReg(@RequestParam String key ,@Valid @RequestBody Long mobileNo) throws VaccineRegistrationException, LoginException{
 			userLoginService.authenthicate(key);
 			VaccineRegistration getvaccinereg=vaccinRegSer.getVaccineRegistration(mobileNo);
@@ -272,16 +231,6 @@ public class MemberRestController {
 			
 		}
 		
-		@GetMapping("/vaccineReg/{mobileNo}")
-		public ResponseEntity<List<Member>> getAllMember (@RequestParam String key ,Long mobileNo) throws VaccineRegistrationException, LoginException{
-			userLoginService.authenthicate(key);
-			List<Member> Vaccine=vaccinRegSer.getAllMember(mobileNo);
-			
-			return new ResponseEntity <List<Member>>(Vaccine,HttpStatus.FOUND);
-			
-		}
-		
-
 		
 		
 		// vaccineService
@@ -293,6 +242,8 @@ public class MemberRestController {
 			List< Vaccine > getvaccinbyname=vaccinser.getVaccineByName(vaccineName);
 			return new ResponseEntity<List< Vaccine >>(getvaccinbyname,HttpStatus.FOUND);
 		}
+
+
 		
 		@GetMapping("/vaccineserviceById/{vaccineName}")
 		public ResponseEntity<Vaccine> getVaccineById( @RequestParam String key ,@Valid @RequestBody Integer vaccineId) throws VaccineException, LoginException{

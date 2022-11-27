@@ -16,6 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class CurrentAdminSession {
+	
 	@Id
 	@Column(unique = true)
 	private Integer userId;  //it take the customerId. we have to give mannually

@@ -71,16 +71,11 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 		VaccinationCenter vaccinationCenter = vacCenterRepo.findById(centerId)
                 .orElseThrow(() -> new VaccineInventoryException("No VaccinationCenter found with centerId : "+ centerId)) ;
 		
-		if(vInventory.getVaccineInventoryId() != null) {
-		
-		
-
+//		if(vInventory.getVaccineInventoryId() != null) { // if auto-generated ID value (as 1st JPA comes than MySql, by which if it is not passed than by default it get's null value
 	
 		
 	    vaccinationCenter.setVaccineInventory( vInventory ); // associating vaccinationCenter with VaccineInventory
-	    
-	    
-	    
+ 
 	    List<VaccineCount> VacCountList = vInventory.getVaccineCounts();
 	    
 	    for(VaccineCount vacCount : VacCountList) {
@@ -89,19 +84,40 @@ public class VaccineInventoryServiceImpl implements VaccineInventoryService {
 	    }
 	    
 	    
-	    vInventory.getVaccinationCenters().add(vaccinationCenter);
+	    if( vInventory.getVaccinationCenters() != null)
+		    vInventory.getVaccinationCenters().add(vaccinationCenter);  // adding the passed centerId vaccination center
+	    
+		else {
+		    	vInventory.setVaccinationCenters(new ArrayList<VaccinationCenter>());
+		    	vInventory.getVaccinationCenters().add(vaccinationCenter);
+		    }
 	    
 	    return vacInvRepo.save(vInventory);
 	    
 	    
-		}else {
-			
-			 vaccinationCenter.setVaccineInventory(vInventory);
-			 
-			 vacCenterRepo.save(vaccinationCenter);
-			
-			return vaccinationCenter.getVaccineInventory();
-		}
+//		}
+		
+//		else {
+//			
+//		    vaccinationCenter.setVaccineInventory( vInventory ); // associating vaccinationCenter with VaccineInventory
+//		    
+//		    List<VaccineCount> VacCountList = vInventory.getVaccineCounts();
+//		    
+//		    for(VaccineCount vacCount : VacCountList) {
+//		    	
+//		    	vacCount.setVaccineInventory(vInventory); // associating each VaccineCount with VaccineInventory
+//		    }
+//		    
+//		    
+//		    if( vInventory.getVaccinationCenters() != null)
+//		    vInventory.getVaccinationCenters().add(vaccinationCenter);
+//		    else {
+//		    	vInventory.setVaccinationCenters(new ArrayList<VaccinationCenter>());
+//		    	vInventory.getVaccinationCenters().add(vaccinationCenter);
+//		    }
+//		    
+//		    return vacInvRepo.save(vInventory);
+//		}
 			
 	
 	}

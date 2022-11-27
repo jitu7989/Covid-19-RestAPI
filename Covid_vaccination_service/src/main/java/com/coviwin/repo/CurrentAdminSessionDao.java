@@ -7,6 +7,7 @@ import com.coviwin.model.CurrentAdminSession;
 
 
 public interface CurrentAdminSessionDao extends JpaRepository<CurrentAdminSession, Integer>{
+	
 	public CurrentAdminSession findByUuid(String uuid);
 
 }

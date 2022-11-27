@@ -55,7 +55,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public Appointment addAppointment(Integer memid  , Appointment app) throws ApppintmentException, MemberException {
 		
 		Member member = memberRepo.findById(memid).orElseThrow( ()->new MemberException( "No member found with that id" ) ); 
+		
 		app.setMember(member);
+		
 		if(member.getAppointments()==null) member.setAppointments( new ArrayList<>() );
 		member.getAppointments().add(app);
 		
@@ -72,6 +74,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		
 		if(app.getVaccinationCenter()!=null) {
 			vacCenter = app.getVaccinationCenter();
+			if(vacCenter.getAppointments() != null)
 			vacCenter.getAppointments().add(app); // associating VaccinationCenter with appointment
 		}
 		else {
@@ -80,6 +83,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 			int x = vCenters.size();
 			int n = (int) (Math.random(  )*x);
 			vacCenter =  vCenters.get(n);
+			if(vacCenter.getAppointments() != null)
 			vacCenter.getAppointments().add(app);
 			
 		}
